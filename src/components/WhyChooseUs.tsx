@@ -1,0 +1,58 @@
+
+import React from 'react';
+import { PieChart, BarChart2, Shield, Activity } from 'lucide-react';
+
+const features = [
+  {
+    title: 'Curated Mutual Fund Portfolios',
+    description: 'Professionally selected and continuously optimized investment funds based on your risk profile and goals.',
+    icon: PieChart,
+  },
+  {
+    title: 'Direct Equity PMS',
+    description: 'Personalized portfolio management services with direct stocks and securities for higher returns potential.',
+    icon: BarChart2,
+  },
+  {
+    title: 'Risk Profiling & Financial Planning',
+    description: 'Scientific assessment of your risk appetite paired with comprehensive financial roadmapping.',
+    icon: Shield,
+  },
+  {
+    title: 'Wealth Monitor App',
+    description: 'Track all your investments in real-time with powerful analytics and performance insights.',
+    icon: Activity,
+  }
+];
+
+const WhyChooseUs: React.FC = () => {
+  return (
+    <section id="why-choose-us" className="section-padding bg-wealth-light">
+      <div className="wealth-container">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <h2 className="heading-2 text-wealth-navy mb-4">Why Choose WealthEvolve</h2>
+          <p className="text-wealth-gray text-lg">
+            We combine sophisticated investment strategies with cutting-edge technology to help you build and manage wealth efficiently.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => (
+            <div 
+              key={index} 
+              className="feature-card flex flex-col items-center text-center group"
+            >
+              <div className="bg-wealth-navy bg-opacity-5 p-4 rounded-full mb-6 group-hover:bg-wealth-navy group-hover:text-white transition-all">
+                <feature.icon size={32} className="text-wealth-navy group-hover:text-white" />
+              </div>
+              <h3 className="font-serif text-xl font-semibold mb-3 text-wealth-navy">{feature.title}</h3>
+              <p className="text-wealth-gray">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default WhyChooseUs;

@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				wealth: {
+					navy: '#0A2342',
+					teal: '#2CA6A4',
+					gold: '#D4AF37',
+					light: '#F5F7FA',
+					gray: '#6B7280',
+					charcoal: '#1E293B',
 				}
 			},
 			borderRadius: {
@@ -84,11 +93,49 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'slide-in-right': {
+					'0%': {
+						transform: 'translateX(100%)'
+					},
+					'100%': {
+						transform: 'translateX(0)'
+					}
+				},
+				'chart-line': {
+					'0%': {
+						'stroke-dashoffset': '1000'
+					},
+					'100%': {
+						'stroke-dashoffset': '0'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.6s ease-out',
+				'slide-in-right': 'slide-in-right 0.4s ease-out',
+				'chart-line': 'chart-line 1.5s ease-out forwards'
+			},
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
+				serif: ['Playfair Display', 'serif'],
+			},
+			backgroundImage: {
+				'gradient-wealth': 'linear-gradient(135deg, #0A2342 0%, #1E293B 100%)',
+				'gradient-teal': 'linear-gradient(90deg, #2CA6A4 0%, #3CAEA3 100%)',
+				'gradient-gold': 'linear-gradient(90deg, #D4AF37 0%, #F2D024 100%)',
 			}
 		}
 	},
