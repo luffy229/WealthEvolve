@@ -1,12 +1,15 @@
 
 import React from 'react';
 import { PieChart, BarChart2, Shield, Activity } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const features = [
   {
     title: 'Curated Mutual Fund Portfolios',
     description: 'Professionally selected and continuously optimized investment funds based on your risk profile and goals.',
     icon: PieChart,
+    link: '/portfolio-overlap',
   },
   {
     title: 'Direct Equity PMS',
@@ -46,7 +49,15 @@ const WhyChooseUs: React.FC = () => {
                 <feature.icon size={32} className="text-wealth-navy group-hover:text-white" />
               </div>
               <h3 className="font-serif text-xl font-semibold mb-3 text-wealth-navy">{feature.title}</h3>
-              <p className="text-wealth-gray">{feature.description}</p>
+              <p className="text-wealth-gray mb-4">{feature.description}</p>
+              
+              {feature.link && (
+                <Link to={feature.link}>
+                  <Button variant="outline" size="sm" className="mt-2">
+                    Try Now
+                  </Button>
+                </Link>
+              )}
             </div>
           ))}
         </div>
