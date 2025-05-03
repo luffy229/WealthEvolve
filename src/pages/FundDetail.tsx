@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
+import { motion } from 'framer-motion';
 import { ArrowDown, ArrowUp, BarChart2, Calendar, FileText, Info, Shield } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -13,6 +14,7 @@ import FundPerformance from '@/components/FundPerformance';
 import FundHoldings from '@/components/FundHoldings';
 import FundRisk from '@/components/FundRisk';
 import FundFees from '@/components/FundFees';
+import ReturnCalculator from '@/components/ReturnCalculator';
 import { getMutualFund } from '@/lib/fundData';
 
 const FundDetail: React.FC = () => {
@@ -36,9 +38,25 @@ const FundDetail: React.FC = () => {
     }
   }, [error, toast]);
   
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+  
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+  
   if (isLoading) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-gradient-to-b from-wealth-light to-white">
         <Navbar />
         <div className="wealth-container py-12 md:py-20">
           <div className="flex items-center justify-center min-h-[60vh]">
@@ -55,7 +73,7 @@ const FundDetail: React.FC = () => {
   
   if (!fund) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-gradient-to-b from-wealth-light to-white">
         <Navbar />
         <div className="wealth-container py-12 md:py-20">
           <div className="flex flex-col items-center justify-center min-h-[60vh]">
@@ -71,13 +89,21 @@ const FundDetail: React.FC = () => {
   const hasPositiveReturn = (fund.performance?.['1Y'] || 0) > 0;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-b from-wealth-light to-white">
       <Navbar />
       <main>
         <div className="wealth-container py-12 md:py-20">
           {/* Fund Header */}
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-6">
+          <motion.div 
+            className="max-w-4xl mx-auto"
+            variants={container}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.div 
+              className="flex flex-col md:flex-row md:justify-between md:items-start mb-6"
+              variants={item}
+            >
               <div>
                 <h1 className="heading-2 text-wealth-navy mb-2">{fund.name}</h1>
                 <div className="flex flex-wrap gap-3 mb-4">
@@ -90,7 +116,10 @@ const FundDetail: React.FC = () => {
                 </div>
               </div>
               
-              <div className="mt-4 md:mt-0 flex flex-col items-start md:items-end">
+              <motion.div 
+                className="mt-4 md:mt-0 flex flex-col items-start md:items-end"
+                variants={item}
+              >
                 <div className="flex items-center">
                   <span className="text-3xl font-serif font-bold">
                     ₹{fund.nav}
@@ -109,49 +138,72 @@ const FundDetail: React.FC = () => {
                   </span>
                   <span className="text-sm text-wealth-gray ml-2">1Y Return</span>
                 </div>
-              </div>
+              </motion.div>
+            </motion.div>
+            
+            <motion.div variants={item}>
+              <Separator className="mb-8" />
+            </motion.div>
+            
+            {/* Fund Details and Calculator Layout */}
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* Main Content - Fund Details Tabs */}
+              <motion.div 
+                className="md:col-span-2"
+                variants={item}
+              >
+                <Tabs defaultValue="performance" className="w-full">
+                  <TabsList className="grid grid-cols-4 mb-6">
+                    <TabsTrigger value="performance" className="flex items-center">
+                      <BarChart2 size={16} className="mr-2" />
+                      <span className="hidden sm:inline">Performance</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="holdings" className="flex items-center">
+                      <FileText size={16} className="mr-2" />
+                      <span className="hidden sm:inline">Holdings</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="risk" className="flex items-center">
+                      <Shield size={16} className="mr-2" />
+                      <span className="hidden sm:inline">Risk</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="fees" className="flex items-center">
+                      <Info size={16} className="mr-2" />
+                      <span className="hidden sm:inline">Fees</span>
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="performance">
+                    <FundPerformance fund={fund} />
+                  </TabsContent>
+                  
+                  <TabsContent value="holdings">
+                    <FundHoldings fund={fund} />
+                  </TabsContent>
+                  
+                  <TabsContent value="risk">
+                    <FundRisk fund={fund} />
+                  </TabsContent>
+                  
+                  <TabsContent value="fees">
+                    <FundFees fund={fund} />
+                  </TabsContent>
+                </Tabs>
+              </motion.div>
+              
+              {/* Sidebar - Return Calculator */}
+              <motion.div
+                className="md:col-span-1"
+                variants={item}
+              >
+                <div className="sticky top-24">
+                  <ReturnCalculator 
+                    fundName={fund.name} 
+                    expectedReturn={fund.performance?.['5Y'] || fund.performance?.['3Y'] || fund.performance?.['1Y'] || 12} 
+                  />
+                </div>
+              </motion.div>
             </div>
-            
-            <Separator className="mb-8" />
-            
-            {/* Fund Details Tabs */}
-            <Tabs defaultValue="performance" className="w-full">
-              <TabsList className="grid grid-cols-4 mb-6">
-                <TabsTrigger value="performance" className="flex items-center">
-                  <BarChart2 size={16} className="mr-2" />
-                  <span className="hidden sm:inline">Performance</span>
-                </TabsTrigger>
-                <TabsTrigger value="holdings" className="flex items-center">
-                  <FileText size={16} className="mr-2" />
-                  <span className="hidden sm:inline">Holdings</span>
-                </TabsTrigger>
-                <TabsTrigger value="risk" className="flex items-center">
-                  <Shield size={16} className="mr-2" />
-                  <span className="hidden sm:inline">Risk</span>
-                </TabsTrigger>
-                <TabsTrigger value="fees" className="flex items-center">
-                  <Info size={16} className="mr-2" />
-                  <span className="hidden sm:inline">Fees</span>
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="performance">
-                <FundPerformance fund={fund} />
-              </TabsContent>
-              
-              <TabsContent value="holdings">
-                <FundHoldings fund={fund} />
-              </TabsContent>
-              
-              <TabsContent value="risk">
-                <FundRisk fund={fund} />
-              </TabsContent>
-              
-              <TabsContent value="fees">
-                <FundFees fund={fund} />
-              </TabsContent>
-            </Tabs>
-          </div>
+          </motion.div>
         </div>
       </main>
       <Footer />

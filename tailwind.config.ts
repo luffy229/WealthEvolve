@@ -64,12 +64,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				wealth: {
-					navy: '#0A2342',
-					teal: '#2CA6A4',
-					gold: '#D4AF37',
-					light: '#F5F7FA',
-					gray: '#6B7280',
-					charcoal: '#1E293B',
+					navy: 'hsl(var(--wealth-navy))',
+					teal: 'hsl(var(--wealth-teal))',
+					gold: 'hsl(var(--wealth-gold))',
+					light: 'hsl(var(--wealth-light-bg))',
+					gray: 'hsl(var(--wealth-gray))',
+					charcoal: 'hsl(var(--wealth-charcoal))',
 				}
 			},
 			borderRadius: {
@@ -119,6 +119,22 @@ export default {
 					'100%': {
 						'stroke-dashoffset': '0'
 					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' },
+				},
+				'pulse-glow': {
+					'0%, 100%': { boxShadow: '0 0 5px 0px rgba(44, 166, 164, 0.5)' },
+					'50%': { boxShadow: '0 0 20px 5px rgba(44, 166, 164, 0.7)' },
+				},
+				'shimmer': {
+					'0%': {
+						backgroundPosition: '-200% 0',
+					},
+					'100%': {
+						backgroundPosition: '200% 0',
+					},
 				}
 			},
 			animation: {
@@ -126,16 +142,20 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.6s ease-out',
 				'slide-in-right': 'slide-in-right 0.4s ease-out',
-				'chart-line': 'chart-line 1.5s ease-out forwards'
+				'chart-line': 'chart-line 1.5s ease-out forwards',
+				'float': 'float 6s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 2s infinite',
+				'shimmer': 'shimmer 2s linear infinite',
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
 				serif: ['Playfair Display', 'serif'],
 			},
 			backgroundImage: {
-				'gradient-wealth': 'linear-gradient(135deg, #0A2342 0%, #1E293B 100%)',
-				'gradient-teal': 'linear-gradient(90deg, #2CA6A4 0%, #3CAEA3 100%)',
-				'gradient-gold': 'linear-gradient(90deg, #D4AF37 0%, #F2D024 100%)',
+				'gradient-wealth': 'linear-gradient(135deg, hsl(var(--wealth-navy)) 0%, hsl(var(--wealth-charcoal)) 100%)',
+				'gradient-teal': 'linear-gradient(90deg, hsl(var(--wealth-teal)) 0%, #3CAEA3 100%)',
+				'gradient-gold': 'linear-gradient(90deg, hsl(var(--wealth-gold)) 0%, #F2D024 100%)',
+				'shimmer': 'linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.2) 20%, transparent 40%, transparent 100%)',
 			}
 		}
 	},
