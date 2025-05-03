@@ -18,16 +18,20 @@ const Navbar: React.FC = () => {
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#why-choose-us" className="text-wealth-gray hover:text-wealth-navy transition-colors">Why Us</a>
-            <a href="#how-it-works" className="text-wealth-gray hover:text-wealth-navy transition-colors">How It Works</a>
-            <a href="#performance" className="text-wealth-gray hover:text-wealth-navy transition-colors">Performance</a>
-            <Link to="/fund/bluechip-equity" className="text-wealth-gray hover:text-wealth-navy transition-colors">Explore Funds</Link>
+          <div className="hidden md:flex items-center space-x-6">
+            <Link to="/explore-funds" className="text-wealth-gray hover:text-wealth-navy transition-colors">Explore Funds</Link>
             <Link to="/portfolio-overlap" className="text-wealth-gray hover:text-wealth-navy transition-colors">Fund Overlap</Link>
+            <Link to="/sip-calculator" className="text-wealth-gray hover:text-wealth-navy transition-colors">SIP Calculator</Link>
+            <Link to="/risk-profiler" className="text-wealth-gray hover:text-wealth-navy transition-colors">Risk Profiler</Link>
+            <Link to="/blog" className="text-wealth-gray hover:text-wealth-navy transition-colors">Insights</Link>
           </div>
           
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" className="border-wealth-navy text-wealth-navy hover:bg-wealth-navy hover:text-white">Login</Button>
+            <Link to="/portfolio-health-check">
+              <Button variant="outline" className="border-wealth-navy text-wealth-navy hover:bg-wealth-navy hover:text-white">
+                Free Portfolio Check
+              </Button>
+            </Link>
             <Button className="bg-wealth-navy hover:bg-opacity-90 text-white">Get Started</Button>
           </div>
           
@@ -46,13 +50,18 @@ const Navbar: React.FC = () => {
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 animate-fade-in">
             <div className="flex flex-col space-y-4">
-              <a href="#why-choose-us" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Why Us</a>
-              <a href="#how-it-works" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">How It Works</a>
-              <a href="#performance" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Performance</a>
-              <Link to="/fund/bluechip-equity" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Explore Funds</Link>
+              <Link to="/explore-funds" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Explore Funds</Link>
               <Link to="/portfolio-overlap" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Fund Overlap</Link>
+              <Link to="/sip-calculator" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">SIP Calculator</Link>
+              <Link to="/risk-profiler" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Risk Profiler</Link>
+              <Link to="/blog" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Insights</Link>
+              
               <div className="flex flex-col space-y-3 mt-2">
-                <Button variant="outline" className="border-wealth-navy text-wealth-navy hover:bg-wealth-navy hover:text-white w-full">Login</Button>
+                <Link to="/portfolio-health-check" className="w-full">
+                  <Button variant="outline" className="border-wealth-navy text-wealth-navy hover:bg-wealth-navy hover:text-white w-full">
+                    Free Portfolio Check
+                  </Button>
+                </Link>
                 <Button className="bg-wealth-navy hover:bg-opacity-90 text-white w-full">Get Started</Button>
               </div>
             </div>

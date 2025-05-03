@@ -9,6 +9,11 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PortfolioOverlap from "./pages/PortfolioOverlap";
 import FundDetail from "./pages/FundDetail";
+import SIPCalculator from "./pages/SIPCalculator";
+import RiskProfiler from "./pages/RiskProfiler";
+import PortfolioHealthCheck from "./pages/PortfolioHealthCheck";
+import Blog from "./pages/Blog";
+import ExploreFunds from "./pages/ExploreFunds";
 
 const App = () => {
   // Create a client
@@ -31,6 +36,11 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/portfolio-overlap" element={<PortfolioOverlap />} />
             <Route path="/fund/:fundId" element={<FundDetail />} />
+            <Route path="/sip-calculator" element={<SIPCalculator />} />
+            <Route path="/risk-profiler" element={<RiskProfiler />} />
+            <Route path="/portfolio-health-check" element={<PortfolioHealthCheck />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/explore-funds" element={<ExploreFunds />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

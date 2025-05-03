@@ -52,6 +52,7 @@ const OverlapAnalyzer: React.FC = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     try {
+      // Filter out empty fund selections
       const selectedFunds = [values.fund1, values.fund2];
       if (values.fund3) selectedFunds.push(values.fund3);
       
@@ -64,6 +65,7 @@ const OverlapAnalyzer: React.FC = () => {
         description: "Portfolio overlap analysis has been calculated successfully.",
       });
     } catch (error) {
+      console.error("Overlap calculation error:", error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -98,7 +100,6 @@ const OverlapAnalyzer: React.FC = () => {
                           {mutualFunds.map((fund) => (
                             <SelectItem key={fund.id} value={fund.id}>
                               {fund.name}
-                              <Link to={`/fund/${fund.id}`} className="text-xs text-wealth-teal hover:underline">View Fund Details</Link>
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -127,7 +128,6 @@ const OverlapAnalyzer: React.FC = () => {
                           {mutualFunds.map((fund) => (
                             <SelectItem key={fund.id} value={fund.id}>
                               {fund.name}
-                              <Link to={`/fund/${fund.id}`} className="text-xs text-wealth-teal hover:underline">View Fund Details</Link>
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -156,7 +156,6 @@ const OverlapAnalyzer: React.FC = () => {
                           {mutualFunds.map((fund) => (
                             <SelectItem key={fund.id} value={fund.id}>
                               {fund.name}
-                              <Link to={`/fund/${fund.id}`} className="text-xs text-wealth-teal hover:underline">View Fund Details</Link>
                             </SelectItem>
                           ))}
                         </SelectGroup>
