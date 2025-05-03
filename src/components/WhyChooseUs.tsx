@@ -9,7 +9,7 @@ const features = [
     title: 'Curated Mutual Fund Portfolios',
     description: 'Professionally selected and continuously optimized investment funds based on your risk profile and goals.',
     icon: PieChart,
-    link: '/portfolio-overlap',
+    link: '/fund/bluechip-equity',
   },
   {
     title: 'Direct Equity PMS',
@@ -54,7 +54,7 @@ const WhyChooseUs: React.FC = () => {
               {feature.link && (
                 <Link to={feature.link}>
                   <Button variant="outline" size="sm" className="mt-2">
-                    Try Now
+                    Explore Funds
                   </Button>
                 </Link>
               )}

@@ -1,4 +1,3 @@
-
 // Mock data for demonstration purposes
 // In a real application, this would come from an API
 
@@ -199,3 +198,73 @@ export function calculateOverlap(fundIds: string[]) {
     fundNames
   };
 }
+
+// Add function to get a specific mutual fund by ID
+export const getMutualFund = (fundId: string) => {
+  // In a real application, this would fetch data from an API
+  // For now, we'll return mock data based on the fundId
+  
+  const fund = {
+    id: fundId,
+    name: "WealthEvolve Bluechip Equity Fund",
+    category: "Large Cap",
+    amc: "WealthEvolve Asset Management",
+    fundManager: "Rajiv Sharma",
+    nav: 42.65,
+    launchDate: "15 Jan 2010",
+    benchmark: "NIFTY 50 TRI",
+    asOfDate: "30 Apr 2024",
+    performance: {
+      "1Y": 18.5,
+      "3Y": 15.2,
+      "5Y": 12.8,
+      "YTD": 5.2
+    },
+    cagr: {
+      sinceInception: 14.3,
+      "3Y": 15.2,
+      "5Y": 12.8
+    },
+    // Other data will be populated from respective component files
+  };
+  
+  return fund;
+};
+
+// Get list of available mutual funds - simplified for the mock
+export const getMutualFunds = () => {
+  return [
+    {
+      id: "bluechip-equity",
+      name: "WealthEvolve Bluechip Equity Fund",
+      category: "Large Cap",
+      amc: "WealthEvolve Asset Management",
+      nav: 42.65,
+      performance: { "1Y": 18.5 }
+    },
+    {
+      id: "midcap-opportunities",
+      name: "WealthEvolve Midcap Opportunities Fund",
+      category: "Mid Cap",
+      amc: "WealthEvolve Asset Management",
+      nav: 38.20,
+      performance: { "1Y": 22.3 }
+    },
+    {
+      id: "balanced-advantage",
+      name: "WealthEvolve Balanced Advantage Fund",
+      category: "Hybrid",
+      amc: "WealthEvolve Asset Management",
+      nav: 28.15,
+      performance: { "1Y": 12.8 }
+    },
+    {
+      id: "dynamic-bond",
+      name: "WealthEvolve Dynamic Bond Fund",
+      category: "Debt",
+      amc: "WealthEvolve Asset Management",
+      nav: 25.40,
+      performance: { "1Y": 7.2 }
+    }
+  ];
+};

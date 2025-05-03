@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Form, 
@@ -97,6 +96,7 @@ const OverlapAnalyzer: React.FC = () => {
                           {mutualFunds.map((fund) => (
                             <SelectItem key={fund.id} value={fund.id}>
                               {fund.name}
+                              <Link to={`/fund/${fund.id}`} className="text-xs text-wealth-teal hover:underline">View Fund Details</Link>
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -125,6 +125,7 @@ const OverlapAnalyzer: React.FC = () => {
                           {mutualFunds.map((fund) => (
                             <SelectItem key={fund.id} value={fund.id}>
                               {fund.name}
+                              <Link to={`/fund/${fund.id}`} className="text-xs text-wealth-teal hover:underline">View Fund Details</Link>
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -153,6 +154,7 @@ const OverlapAnalyzer: React.FC = () => {
                           {mutualFunds.map((fund) => (
                             <SelectItem key={fund.id} value={fund.id}>
                               {fund.name}
+                              <Link to={`/fund/${fund.id}`} className="text-xs text-wealth-teal hover:underline">View Fund Details</Link>
                             </SelectItem>
                           ))}
                         </SelectGroup>

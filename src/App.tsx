@@ -8,6 +8,7 @@ import { useState } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PortfolioOverlap from "./pages/PortfolioOverlap";
+import FundDetail from "./pages/FundDetail";
 
 const App = () => {
   // Create a client
@@ -29,6 +30,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/portfolio-overlap" element={<PortfolioOverlap />} />
+            <Route path="/fund/:fundId" element={<FundDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
