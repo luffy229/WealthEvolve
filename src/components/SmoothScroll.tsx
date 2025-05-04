@@ -14,7 +14,6 @@ const SmoothScroll: React.FC<SmoothScrollProps> = ({ children }) => {
       // Removing unsupported properties from LenisOptions
       orientation: 'vertical', // Using 'orientation' instead of 'gestureDirection'
       smoothWheel: true, // Use smoothWheel instead of smooth
-      smoothTouch: false,
       touchMultiplier: 2,
     });
 
