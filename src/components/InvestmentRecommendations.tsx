@@ -190,7 +190,8 @@ const InvestmentRecommendations: React.FC<InvestmentRecommendationsProps> = ({
                   <span>Equity</span>
                   <span className="font-medium">{portfolioAllocation.equity}%</span>
                 </div>
-                <Progress value={portfolioAllocation.equity} className="h-2 bg-gray-200" indicatorClassName="bg-blue-600" />
+                <Progress value={portfolioAllocation.equity} className="h-2 bg-gray-200" />
+                <div className="h-2 w-full bg-blue-600 rounded-full" style={{ width: `${portfolioAllocation.equity}%` }} />
               </div>
               
               {/* Debt */}
@@ -199,7 +200,8 @@ const InvestmentRecommendations: React.FC<InvestmentRecommendationsProps> = ({
                   <span>Debt</span>
                   <span className="font-medium">{portfolioAllocation.debt}%</span>
                 </div>
-                <Progress value={portfolioAllocation.debt} className="h-2 bg-gray-200" indicatorClassName="bg-green-600" />
+                <Progress value={portfolioAllocation.debt} className="h-2 bg-gray-200" />
+                <div className="h-2 w-full bg-green-600 rounded-full" style={{ width: `${portfolioAllocation.debt}%` }} />
               </div>
               
               {/* Gold */}
@@ -208,7 +210,8 @@ const InvestmentRecommendations: React.FC<InvestmentRecommendationsProps> = ({
                   <span>Gold</span>
                   <span className="font-medium">{portfolioAllocation.gold}%</span>
                 </div>
-                <Progress value={portfolioAllocation.gold} className="h-2 bg-gray-200" indicatorClassName="bg-yellow-500" />
+                <Progress value={portfolioAllocation.gold} className="h-2 bg-gray-200" />
+                <div className="h-2 w-full bg-yellow-500 rounded-full" style={{ width: `${portfolioAllocation.gold}%` }} />
               </div>
               
               {/* Cash */}
@@ -217,7 +220,8 @@ const InvestmentRecommendations: React.FC<InvestmentRecommendationsProps> = ({
                   <span>Cash & Equivalents</span>
                   <span className="font-medium">{portfolioAllocation.cash}%</span>
                 </div>
-                <Progress value={portfolioAllocation.cash} className="h-2 bg-gray-200" indicatorClassName="bg-gray-500" />
+                <Progress value={portfolioAllocation.cash} className="h-2 bg-gray-200" />
+                <div className="h-2 w-full bg-gray-500 rounded-full" style={{ width: `${portfolioAllocation.cash}%` }} />
               </div>
             </div>
           </CardContent>
