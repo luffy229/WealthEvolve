@@ -13,7 +13,7 @@ const SmoothScroll: React.FC<SmoothScrollProps> = ({ children }) => {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       // Removing unsupported properties from LenisOptions
       orientation: 'vertical', // Using 'orientation' instead of 'gestureDirection'
-      smooth: true,
+      smoothWheel: true, // Use smoothWheel instead of smooth
       smoothTouch: false,
       touchMultiplier: 2,
     });
