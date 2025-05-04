@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center space-x-6">
             <Link to="/explore-funds" className="text-wealth-gray hover:text-wealth-navy transition-colors">Explore Funds</Link>
             <Link to="/portfolio-overlap" className="text-wealth-gray hover:text-wealth-navy transition-colors">Fund Overlap</Link>
-            <Link to="/sip-calculator" className="text-wealth-gray hover:text-wealth-navy transition-colors">SIP Calculator</Link>
+            <Link to="/investment-analyzer" className="text-wealth-gray hover:text-wealth-navy transition-colors">Investment Analyzer</Link>
             <Link to="/risk-profiler" className="text-wealth-gray hover:text-wealth-navy transition-colors">Risk Profiler</Link>
             <Link to="/blog" className="text-wealth-gray hover:text-wealth-navy transition-colors">Insights</Link>
           </div>
@@ -32,7 +32,14 @@ const Navbar: React.FC = () => {
                 Free Portfolio Check
               </Button>
             </Link>
-            <Button className="bg-wealth-navy hover:bg-opacity-90 text-white">Get Started</Button>
+            <Link to="/login" className="mr-2">
+              <Button variant="outline" className="border-wealth-teal text-wealth-teal hover:bg-wealth-teal hover:text-white">
+                Login
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button className="bg-wealth-navy hover:bg-opacity-90 text-white">Sign Up</Button>
+            </Link>
           </div>
           
           {/* Mobile menu button */}
@@ -52,7 +59,7 @@ const Navbar: React.FC = () => {
             <div className="flex flex-col space-y-4">
               <Link to="/explore-funds" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Explore Funds</Link>
               <Link to="/portfolio-overlap" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Fund Overlap</Link>
-              <Link to="/sip-calculator" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">SIP Calculator</Link>
+              <Link to="/investment-analyzer" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Investment Analyzer</Link>
               <Link to="/risk-profiler" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Risk Profiler</Link>
               <Link to="/blog" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Insights</Link>
               
@@ -62,7 +69,15 @@ const Navbar: React.FC = () => {
                     Free Portfolio Check
                   </Button>
                 </Link>
-                <Button className="bg-wealth-navy hover:bg-opacity-90 text-white w-full">Get Started</Button>
+                <Link to="/login" className="w-full">
+                  <Button variant="outline" className="border-wealth-teal text-wealth-teal hover:bg-wealth-teal hover:text-white w-full">
+                    <User className="mr-2 h-4 w-4" />
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup" className="w-full">
+                  <Button className="bg-wealth-navy hover:bg-opacity-90 text-white w-full">Sign Up</Button>
+                </Link>
               </div>
             </div>
           </div>

@@ -15,6 +15,9 @@ import RiskProfiler from "./pages/RiskProfiler";
 import PortfolioHealthCheck from "./pages/PortfolioHealthCheck";
 import Blog from "./pages/Blog";
 import ExploreFunds from "./pages/ExploreFunds";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import InvestmentAnalyzer from "./pages/InvestmentAnalyzer";
 
 const App = () => {
   // Create a client
@@ -43,6 +46,9 @@ const App = () => {
               <Route path="/portfolio-health-check" element={<PortfolioHealthCheck />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/explore-funds" element={<ExploreFunds />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/investment-analyzer" element={<InvestmentAnalyzer />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
