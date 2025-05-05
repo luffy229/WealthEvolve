@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, User } from 'lucide-react';
+import ThemeSwitcher from './ThemeSwitcher';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
+    <nav className="bg-white shadow-sm sticky top-0 z-50 theme-navbar">
       <div className="wealth-container py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -27,6 +28,7 @@ const Navbar: React.FC = () => {
           </div>
           
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeSwitcher />
             <Link to="/portfolio-health-check">
               <Button variant="outline" className="border-wealth-navy text-wealth-navy hover:bg-wealth-navy hover:text-white">
                 Free Portfolio Check
@@ -43,7 +45,8 @@ const Navbar: React.FC = () => {
           </div>
           
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeSwitcher />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-wealth-navy p-2"
