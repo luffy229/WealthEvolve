@@ -1,11 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, BarChart, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { Download } from 'lucide-react';
+import { Download, ChartPie, BarChart as BarChartIcon, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
 
 interface OverlapResultsProps {
   data: {
@@ -18,7 +20,17 @@ interface OverlapResultsProps {
 
 const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
   const [activeTab, setActiveTab] = useState<string>("summary");
+  const [animationComplete, setAnimationComplete] = useState<boolean>(false);
 
+  useEffect(() => {
+    // Start the entrance animation
+    const timer = setTimeout(() => {
+      setAnimationComplete(true);
+    }, 1200);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   const handleExport = () => {
     // In a real app, implement PDF/CSV export functionality
     alert("Export functionality would generate a PDF/CSV file");
@@ -41,26 +53,56 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
   
   const COLORS = ['#0088FE', '#00C49F'];
 
+  // Function to generate risk level badge
+  const getRiskBadge = (overlapPercentage: number) => {
+    if (overlapPercentage > 30) {
+      return (
+        <Badge variant="destructive" className="flex items-center gap-1">
+          <AlertTriangle className="h-3 w-3" />
+          High Risk
+        </Badge>
+      );
+    } else if (overlapPercentage > 15) {
+      return (
+        <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-200 flex items-center gap-1">
+          <AlertTriangle className="h-3 w-3" />
+          Moderate Risk
+        </Badge>
+      );
+    } else {
+      return (
+        <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200 flex items-center gap-1">
+          <CheckCircle className="h-3 w-3" />
+          Low Risk
+        </Badge>
+      );
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-xl p-6 shadow-md">
+      <div className="bg-white rounded-xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-wealth-navy">Overlap Analysis Results</h2>
-          <Button onClick={handleExport} variant="outline" className="flex items-center gap-1">
+          <h2 className="text-xl font-semibold text-wealth-navy flex items-center">
+            <ChartPie className="mr-2 text-wealth-teal" /> 
+            Overlap Analysis Results
+          </h2>
+          <Button onClick={handleExport} variant="outline" className="flex items-center gap-1 bg-wealth-light hover:bg-wealth-light/80">
             <Download size={16} /> Export
           </Button>
         </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="summary">Summary</TabsTrigger>
-            <TabsTrigger value="visualizations">Visualizations</TabsTrigger>
-            <TabsTrigger value="holdings">Common Holdings</TabsTrigger>
+            <TabsTrigger value="summary" className="data-[state=active]:bg-wealth-navy data-[state=active]:text-white">Summary</TabsTrigger>
+            <TabsTrigger value="visualizations" className="data-[state=active]:bg-wealth-navy data-[state=active]:text-white">Visualizations</TabsTrigger>
+            <TabsTrigger value="holdings" className="data-[state=active]:bg-wealth-navy data-[state=active]:text-white">Common Holdings</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="summary" className="space-y-6">
+          <TabsContent value="summary" className="space-y-6 animate-fade-in">
             <div className="p-4 border border-amber-200 bg-amber-50 rounded-lg">
-              <p className="font-medium text-amber-800">
+              <p className="font-medium text-amber-800 flex items-center">
+                <AlertTriangle className="mr-2 h-4 w-4" />
                 {Object.values(data.overlapPercentages)[0] > 30 
                   ? "High overlap detected. Consider diversifying your portfolio with funds that have less overlapping holdings."
                   : "Good diversification. Your selected funds have acceptable overlap levels."}
@@ -68,25 +110,45 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="border rounded-lg p-4">
-                <h3 className="font-medium mb-3">Overlap Summary</h3>
+              <div className="border rounded-lg p-4 bg-white hover:shadow-md transition-all duration-300">
+                <h3 className="font-medium mb-3 flex items-center">
+                  <BarChartIcon className="mr-2 h-4 w-4 text-wealth-teal" />
+                  Overlap Summary
+                </h3>
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Fund Combination</TableHead>
                       <TableHead className="text-right">Overlap %</TableHead>
+                      <TableHead className="text-right">Risk Level</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {data.fundPairs.map((pair, idx) => {
                       const key = `${pair[0]}-${pair[1]}`;
+                      const overlapPercentage = data.overlapPercentages[key] || 0;
                       return (
-                        <TableRow key={idx}>
+                        <TableRow key={idx} className={
+                          animationComplete ? `animate-fade-in` : ''
+                        } style={{ animationDelay: `${idx * 100}ms` }}>
                           <TableCell>{data.fundNames[pair[0]]} & {data.fundNames[pair[1]]}</TableCell>
                           <TableCell className="text-right">
-                            <span className={`font-medium ${data.overlapPercentages[key] > 30 ? 'text-red-600' : 'text-green-600'}`}>
-                              {data.overlapPercentages[key].toFixed(2)}%
-                            </span>
+                            <div className="flex items-center justify-end gap-2">
+                              <Progress 
+                                value={overlapPercentage} 
+                                className="w-24 h-2"
+                                style={{
+                                  background: 'rgba(226, 232, 240, 0.6)',
+                                }}
+                                color={overlapPercentage > 30 ? 'bg-red-500' : overlapPercentage > 15 ? 'bg-amber-500' : 'bg-green-500'}
+                              />
+                              <span className={`font-medium ${overlapPercentage > 30 ? 'text-red-600' : overlapPercentage > 15 ? 'text-amber-600' : 'text-green-600'}`}>
+                                {overlapPercentage.toFixed(2)}%
+                              </span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {getRiskBadge(overlapPercentage)}
                           </TableCell>
                         </TableRow>
                       );
@@ -95,30 +157,59 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                 </Table>
               </div>
               
-              <div className="border rounded-lg p-4">
-                <h3 className="font-medium mb-3">Key Insights</h3>
+              <div className="border rounded-lg p-4 bg-white hover:shadow-md transition-all duration-300">
+                <h3 className="font-medium mb-3 flex items-center">
+                  <TrendingUp className="mr-2 h-4 w-4 text-wealth-teal" />
+                  Key Insights
+                </h3>
+                <div className="mb-4">
+                  <div className="text-xl font-bold mb-2 text-wealth-navy">
+                    {data.overlapStocks.length}
+                    <span className="text-sm text-wealth-teal ml-1">overlapping stocks</span>
+                  </div>
+                  
+                  {Object.values(data.overlapPercentages)[0] > 0 && (
+                    <div className="p-3 rounded-lg bg-gradient-to-r from-wealth-light to-white mb-4">
+                      <div className="grid grid-cols-2 gap-2 mb-2">
+                        <div className="text-xs text-wealth-gray uppercase">Top Overlapping Stocks</div>
+                        <div className="text-xs text-wealth-gray uppercase text-right">Weight</div>
+                      </div>
+                      {data.overlapStocks.slice(0, 3).map((stock, idx) => (
+                        <div key={idx} className="flex justify-between items-center py-1 border-t border-gray-100">
+                          <span className="font-medium">{stock.name}</span>
+                          <span className="text-wealth-teal">{(Object.values(stock.allocations)[0] as number).toFixed(2)}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
                 <ul className="list-disc pl-5 space-y-2 text-wealth-gray">
-                  <li>You have <strong>{data.overlapStocks.length}</strong> overlapping stocks across selected funds.</li>
-                  <li>
+                  <li className="animate-fade-in" style={{ animationDelay: "200ms" }}>
                     {Object.values(data.overlapPercentages)[0] > 30 
-                      ? "High overlap suggests you might be paying management fees for similar investments."
-                      : "Your funds appear to be well-diversified with minimal redundancy."}
+                      ? <span className="text-red-600 font-medium">High overlap suggests you might be paying management fees for similar investments.</span>
+                      : <span className="text-green-600 font-medium">Your funds appear to be well-diversified with minimal redundancy.</span>}
                   </li>
-                  <li>Consider funds with complementary sector exposures for better diversification.</li>
+                  <li className="animate-fade-in" style={{ animationDelay: "300ms" }}>
+                    Consider funds with complementary sector exposures for better diversification.
+                  </li>
                 </ul>
               </div>
             </div>
           </TabsContent>
           
-          <TabsContent value="visualizations">
+          <TabsContent value="visualizations" className="animate-fade-in">
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="border rounded-lg p-4">
-                <h3 className="font-medium mb-3">Overlap Percentage</h3>
+              <div className="border rounded-lg p-4 bg-white hover:shadow-md transition-all duration-300">
+                <h3 className="font-medium mb-3 flex items-center">
+                  <BarChartIcon className="mr-2 h-4 w-4 text-wealth-teal" />
+                  Overlap Percentage
+                </h3>
                 <div className="h-[300px]">
                   <ChartContainer 
                     config={{
                       overlap: {
-                        color: '#0088FE',
+                        color: '#8B5CF6',
                       },
                       unique: {
                         color: '#00C49F',
@@ -130,22 +221,25 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                         <XAxis dataKey="name" />
                         <YAxis domain={[0, 100]} />
                         <Tooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="overlap" fill="#0088FE" name="Overlap %" />
+                        <Bar dataKey="overlap" fill="#8B5CF6" name="Overlap %" className="animate-chart-line" />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
                 </div>
               </div>
               
-              <div className="border rounded-lg p-4">
-                <h3 className="font-medium mb-3">Portfolio Composition</h3>
+              <div className="border rounded-lg p-4 bg-white hover:shadow-md transition-all duration-300">
+                <h3 className="font-medium mb-3 flex items-center">
+                  <ChartPie className="mr-2 h-4 w-4 text-wealth-teal" />
+                  Portfolio Composition
+                </h3>
                 <div className="h-[300px]">
                   <ChartContainer
                     config={{
                       overlap: {
                         theme: {
-                          light: '#0088FE',
-                          dark: '#0088FE', 
+                          light: '#8B5CF6',
+                          dark: '#8B5CF6', 
                         },
                         label: 'Overlapping Holdings',
                       },
@@ -169,6 +263,7 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                           fill="#8884d8"
                           dataKey="value"
                           nameKey="name"
+                          className="animate-chart-line"
                         >
                           {pieData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -184,12 +279,15 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
             </div>
           </TabsContent>
           
-          <TabsContent value="holdings">
-            <div className="border rounded-lg p-4">
-              <h3 className="font-medium mb-3">Common Holdings</h3>
+          <TabsContent value="holdings" className="animate-fade-in">
+            <div className="border rounded-lg p-4 bg-white hover:shadow-md transition-all duration-300">
+              <h3 className="font-medium mb-3 flex items-center">
+                <TrendingUp className="mr-2 h-4 w-4 text-wealth-teal" />
+                Common Holdings
+              </h3>
               <div className="max-h-[400px] overflow-y-auto">
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="sticky top-0 bg-white">
                     <TableRow>
                       <TableHead>Stock</TableHead>
                       {Object.values(data.fundNames).map((name, idx) => (
@@ -200,14 +298,25 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                   </TableHeader>
                   <TableBody>
                     {data.overlapStocks.map((stock, idx) => (
-                      <TableRow key={idx}>
-                        <TableCell>{stock.name}</TableCell>
+                      <TableRow key={idx} className="hover:bg-wealth-light/30 transition-colors duration-150">
+                        <TableCell className="font-medium">{stock.name}</TableCell>
                         {Object.keys(data.fundNames).map((fundId, idx) => (
                           <TableCell key={idx} className="text-right">
-                            {stock.allocations[fundId] ? stock.allocations[fundId].toFixed(2) : "-"}
+                            {stock.allocations[fundId] ? (
+                              <span className="relative">
+                                <span className="absolute inset-y-0 left-0 h-full bg-wealth-teal/20" style={{ width: `${stock.allocations[fundId] * 3}%` }}></span>
+                                <span className="relative z-10">
+                                  {stock.allocations[fundId] ? stock.allocations[fundId].toFixed(2) : "-"}
+                                </span>
+                              </span>
+                            ) : "-"}
                           </TableCell>
                         ))}
-                        <TableCell className="text-right">{stock.sector}</TableCell>
+                        <TableCell className="text-right">
+                          <Badge variant="outline" className="bg-gray-100">
+                            {stock.sector}
+                          </Badge>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -218,22 +327,41 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
         </Tabs>
       </div>
       
-      <div className="bg-white rounded-xl p-6 shadow-md">
-        <h3 className="text-lg font-medium text-wealth-navy mb-4">Tips for Better Diversification</h3>
-        <ul className="list-disc pl-5 space-y-3 text-wealth-gray">
-          <li>
-            <span className="font-medium">Aim for low overlap:</span> A well-diversified portfolio typically has less than 20% overlap between funds.
-          </li>
-          <li>
-            <span className="font-medium">Consider complementary sectors:</span> Choose funds that focus on different market segments or industries.
-          </li>
-          <li>
-            <span className="font-medium">Mix investment styles:</span> Combine growth, value, and blend approaches to diversify your strategy.
-          </li>
-          <li>
-            <span className="font-medium">Geographical diversification:</span> Include funds that invest in different regions or countries.
-          </li>
-        </ul>
+      <div className="bg-gradient-to-r from-wealth-navy/5 to-wealth-teal/5 rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+        <h3 className="text-lg font-medium text-wealth-navy mb-4 flex items-center">
+          <TrendingUp className="mr-2 text-wealth-teal" />
+          Tips for Better Diversification
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ul className="list-none space-y-3 text-wealth-gray">
+            <li className="flex items-start animate-fade-in" style={{ animationDelay: "100ms" }}>
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-wealth-teal text-white mr-2 mt-0.5 shrink-0">1</div>
+              <div>
+                <span className="font-medium text-wealth-navy">Aim for low overlap:</span> A well-diversified portfolio typically has less than 20% overlap between funds.
+              </div>
+            </li>
+            <li className="flex items-start animate-fade-in" style={{ animationDelay: "200ms" }}>
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-wealth-teal text-white mr-2 mt-0.5 shrink-0">2</div>
+              <div>
+                <span className="font-medium text-wealth-navy">Consider complementary sectors:</span> Choose funds that focus on different market segments or industries.
+              </div>
+            </li>
+          </ul>
+          <ul className="list-none space-y-3 text-wealth-gray">
+            <li className="flex items-start animate-fade-in" style={{ animationDelay: "300ms" }}>
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-wealth-teal text-white mr-2 mt-0.5 shrink-0">3</div>
+              <div>
+                <span className="font-medium text-wealth-navy">Mix investment styles:</span> Combine growth, value, and blend approaches to diversify your strategy.
+              </div>
+            </li>
+            <li className="flex items-start animate-fade-in" style={{ animationDelay: "400ms" }}>
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-wealth-teal text-white mr-2 mt-0.5 shrink-0">4</div>
+              <div>
+                <span className="font-medium text-wealth-navy">Geographical diversification:</span> Include funds that invest in different regions or countries.
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );
