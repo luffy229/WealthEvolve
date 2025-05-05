@@ -24,6 +24,7 @@ const Navbar: React.FC = () => {
             <Link to="/portfolio-overlap" className="text-wealth-gray hover:text-wealth-navy transition-colors">Fund Overlap</Link>
             <Link to="/investment-analyzer" className="text-wealth-gray hover:text-wealth-navy transition-colors">Investment Analyzer</Link>
             <Link to="/risk-profiler" className="text-wealth-gray hover:text-wealth-navy transition-colors">Risk Profiler</Link>
+            <Link to="/team" className="text-wealth-gray hover:text-wealth-navy transition-colors">Our Team</Link>
             <Link to="/blog" className="text-wealth-gray hover:text-wealth-navy transition-colors">Insights</Link>
           </div>
           
@@ -64,6 +65,7 @@ const Navbar: React.FC = () => {
               <Link to="/portfolio-overlap" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Fund Overlap</Link>
               <Link to="/investment-analyzer" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Investment Analyzer</Link>
               <Link to="/risk-profiler" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Risk Profiler</Link>
+              <Link to="/team" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Our Team</Link>
               <Link to="/blog" className="text-wealth-gray hover:text-wealth-navy transition-colors py-2">Insights</Link>
               
               <div className="flex flex-col space-y-3 mt-2">

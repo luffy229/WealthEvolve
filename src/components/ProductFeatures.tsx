@@ -1,7 +1,9 @@
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Phone, Target, Shield, BarChart2, FileText } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 
 const products = [
   {
@@ -30,6 +32,69 @@ const products = [
     icon: FileText
   }
 ];
+
+// 3D Components
+function PhoneModel() {
+  return (
+    <group>
+      {/* Phone base */}
+      <mesh position={[0, 0, 0]} castShadow>
+        <boxGeometry args={[1, 2, 0.1]} />
+        <meshStandardMaterial color="#2C3E50" />
+      </mesh>
+      
+      {/* Screen */}
+      <mesh position={[0, 0, 0.06]} castShadow>
+        <boxGeometry args={[0.9, 1.8, 0.01]} />
+        <meshStandardMaterial color="#2CA6A4" emissive="#2CA6A4" emissiveIntensity={0.5} />
+      </mesh>
+      
+      {/* Home button */}
+      <mesh position={[0, -1, 0.06]} castShadow>
+        <cylinderGeometry args={[0.1, 0.1, 0.02, 32]} />
+        <meshStandardMaterial color="#333" />
+      </mesh>
+      
+      {/* Camera */}
+      <mesh position={[0, 0.85, 0.06]} castShadow>
+        <cylinderGeometry args={[0.05, 0.05, 0.02, 32]} />
+        <meshStandardMaterial color="#111" />
+      </mesh>
+      
+      {/* App icons (simplified as colored squares) */}
+      {[
+        [-0.3, 0.4, 0.07, "#e74c3c"],
+        [0, 0.4, 0.07, "#3498db"],
+        [0.3, 0.4, 0.07, "#2ecc71"],
+        [-0.3, 0, 0.07, "#f1c40f"],
+        [0, 0, 0.07, "#9b59b6"],
+        [0.3, 0, 0.07, "#e67e22"],
+      ].map((params, i) => (
+        <mesh key={i} position={[params[0], params[1], params[2]]} castShadow>
+          <boxGeometry args={[0.18, 0.18, 0.01]} />
+          <meshStandardMaterial color={params[3]} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function Scene() {
+  return (
+    <>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+      <PhoneModel />
+      <OrbitControls 
+        enableZoom={false}
+        autoRotate
+        autoRotateSpeed={3}
+        minPolarAngle={Math.PI / 3}
+        maxPolarAngle={Math.PI / 1.5}
+      />
+    </>
+  );
+}
 
 const ProductFeatures: React.FC = () => {
   return (
@@ -62,18 +127,20 @@ const ProductFeatures: React.FC = () => {
           </div>
           
           <div className="order-1 lg:order-2 flex justify-center">
-            <div className="relative max-w-sm">
-              {/* Mockup phone */}
-              <div className="bg-wealth-navy rounded-[3rem] p-2 shadow-2xl">
-                <div className="bg-white rounded-[2.5rem] overflow-hidden h-[580px] w-[280px]">
+            <div className="relative w-[280px] h-[580px]">
+              {/* 3D Phone Model */}
+              <div className="bg-wealth-navy rounded-[3rem] p-2 shadow-2xl h-full w-full">
+                <div className="bg-black rounded-[2.5rem] overflow-hidden h-full w-full relative">
                   <div className="bg-wealth-navy h-10 flex justify-center items-center">
                     <div className="w-20 h-6 bg-black rounded-b-xl"></div>
                   </div>
-                  <img 
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?fit=crop&w=280&h=570" 
-                    alt="Wealth Monitor App" 
-                    className="w-full h-full object-cover"
-                  />
+                  <div className="absolute inset-0 top-10">
+                    <Suspense fallback={<div className="w-full h-full bg-gray-800 flex items-center justify-center text-white">Loading Model...</div>}>
+                      <Canvas camera={{ position: [0, 0, 3] }} className="h-full w-full">
+                        <Scene />
+                      </Canvas>
+                    </Suspense>
+                  </div>
                 </div>
               </div>
               

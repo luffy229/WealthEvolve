@@ -19,6 +19,7 @@ import ExploreFunds from "./pages/ExploreFunds";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import InvestmentAnalyzer from "./pages/InvestmentAnalyzer";
+import Team from "./pages/Team";
 
 const App = () => {
   // Create a client
@@ -51,6 +52,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/investment-analyzer" element={<InvestmentAnalyzer />} />
+                <Route path="/team" element={<Team />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
