@@ -102,27 +102,31 @@ const OverlapAnalyzer: React.FC = () => {
 
   return (
     <div className="space-y-12">
-      <div className="bg-white rounded-xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300">
+      <div className="bg-white rounded-xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-wealth-teal/5 rounded-full"></div>
+        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-wealth-navy/5 rounded-full"></div>
+        
         <h2 className="text-xl font-semibold text-wealth-navy mb-6 flex items-center">
           <ChartPie className="mr-2 text-wealth-teal" />
           Select Funds to Compare
         </h2>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
             <div className="grid md:grid-cols-3 gap-6">
               <FormField
                 control={form.control}
                 name="fund1"
                 render={({ field }) => (
                   <FormItem className="animate-fade-in" style={{ animationDelay: "0ms" }}>
-                    <FormLabel>Fund 1</FormLabel>
+                    <FormLabel className="font-medium text-wealth-navy">Fund 1</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isLoading}
                     >
-                      <SelectTrigger className="w-full bg-gray-50 border-gray-200">
+                      <SelectTrigger className="w-full bg-gradient-to-b from-gray-50 to-white border-gray-200 shadow-sm">
                         <SelectValue placeholder="Select a fund" />
                       </SelectTrigger>
                       <SelectContent>
@@ -145,13 +149,13 @@ const OverlapAnalyzer: React.FC = () => {
                 name="fund2"
                 render={({ field }) => (
                   <FormItem className="animate-fade-in" style={{ animationDelay: "100ms" }}>
-                    <FormLabel>Fund 2</FormLabel>
+                    <FormLabel className="font-medium text-wealth-navy">Fund 2</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isLoading}
                     >
-                      <SelectTrigger className="w-full bg-gray-50 border-gray-200">
+                      <SelectTrigger className="w-full bg-gradient-to-b from-gray-50 to-white border-gray-200 shadow-sm">
                         <SelectValue placeholder="Select a fund" />
                       </SelectTrigger>
                       <SelectContent>
@@ -174,13 +178,13 @@ const OverlapAnalyzer: React.FC = () => {
                 name="fund3"
                 render={({ field }) => (
                   <FormItem className="animate-fade-in" style={{ animationDelay: "200ms" }}>
-                    <FormLabel>Fund 3 (Optional)</FormLabel>
+                    <FormLabel className="font-medium text-wealth-navy">Fund 3 (Optional)</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       disabled={isLoading}
                     >
-                      <SelectTrigger className="w-full bg-gray-50 border-gray-200">
+                      <SelectTrigger className="w-full bg-gradient-to-b from-gray-50 to-white border-gray-200 shadow-sm">
                         <SelectValue placeholder="Select a fund (optional)" />
                       </SelectTrigger>
                       <SelectContent>
@@ -200,12 +204,16 @@ const OverlapAnalyzer: React.FC = () => {
             </div>
             
             {isLoading && (
-              <div className="py-4 animate-fade-in">
-                <div className="flex justify-between text-sm mb-1">
-                  <span>Analyzing portfolios...</span>
-                  <span>{Math.round(analysisProgress)}%</span>
+              <div className="py-4 animate-fade-in bg-gradient-to-r from-wealth-light to-white p-4 rounded-lg shadow-inner">
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="font-medium text-wealth-navy">Analyzing portfolios...</span>
+                  <span className="text-wealth-teal font-bold">{Math.round(analysisProgress)}%</span>
                 </div>
-                <Progress value={analysisProgress} className="h-2" />
+                <Progress 
+                  value={analysisProgress} 
+                  className="h-3 bg-gray-100" 
+                  color="bg-gradient-to-r from-wealth-teal to-wealth-navy" 
+                />
               </div>
             )}
             
@@ -213,7 +221,7 @@ const OverlapAnalyzer: React.FC = () => {
               <Button 
                 type="submit" 
                 size="lg"
-                className="bg-gradient-to-r from-wealth-teal to-wealth-navy hover:from-wealth-navy hover:to-wealth-teal transition-all duration-300"
+                className="bg-gradient-to-r from-wealth-teal to-wealth-navy hover:from-wealth-navy hover:to-wealth-teal transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -239,7 +247,7 @@ const OverlapAnalyzer: React.FC = () => {
       {results && <OverlapResults data={results} />}
       
       {!results && (
-        <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300">
+        <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-wealth-light/50">
           <div className="text-center space-y-4">
             <h3 className="text-lg font-medium text-wealth-navy flex items-center justify-center">
               <Info className="mr-2 text-wealth-teal" />
@@ -249,27 +257,26 @@ const OverlapAnalyzer: React.FC = () => {
               High overlap between mutual funds can lead to unintentional concentration risk and reduced diversification.
               A well-diversified portfolio typically has less than 20% overlap between funds.
             </p>
-            <div className="flex justify-center mt-6">
-              <div className="relative w-2/3">
-                <div className="absolute -inset-1 bg-gradient-to-r from-wealth-gold via-wealth-teal to-wealth-navy rounded-lg blur-md opacity-30 animate-pulse-glow"></div>
-                <img 
-                  src="/placeholder.svg" 
-                  alt="Portfolio Overlap Illustration" 
-                  className="relative rounded-lg shadow-md animate-float"
-                />
-              </div>
+            
+            <div className="flex justify-center mt-6 relative overflow-hidden rounded-lg">
+              <div className="absolute inset-0 bg-gradient-to-r from-wealth-teal/20 to-wealth-navy/20 animate-pulse"></div>
+              <img 
+                src="/lovable-uploads/ad1114d1-2e41-40e1-a591-75b2054adfb1.png" 
+                alt="Portfolio Overlap Illustration" 
+                className="relative rounded-lg shadow-md animate-float z-10 w-2/3 object-cover"
+              />
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-              <div className="p-4 rounded-lg bg-amber-50 border border-amber-100 animate-fade-in" style={{ animationDelay: "100ms" }}>
+              <div className="p-4 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100/50 border border-amber-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105" style={{ animationDelay: "100ms" }}>
                 <h4 className="font-medium text-amber-800 mb-2">Risk Concentration</h4>
                 <p className="text-sm text-amber-700">Overlapping funds can amplify exposure to specific sectors or stocks</p>
               </div>
-              <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-100 animate-fade-in" style={{ animationDelay: "200ms" }}>
+              <div className="p-4 rounded-lg bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105" style={{ animationDelay: "200ms" }}>
                 <h4 className="font-medium text-emerald-800 mb-2">Fee Efficiency</h4>
                 <p className="text-sm text-emerald-700">Why pay multiple management fees for the same underlying assets?</p>
               </div>
-              <div className="p-4 rounded-lg bg-blue-50 border border-blue-100 animate-fade-in" style={{ animationDelay: "300ms" }}>
+              <div className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105" style={{ animationDelay: "300ms" }}>
                 <h4 className="font-medium text-blue-800 mb-2">True Diversification</h4>
                 <p className="text-sm text-blue-700">Analyze your actual exposure across asset classes and sectors</p>
               </div>
