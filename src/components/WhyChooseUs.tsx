@@ -15,16 +15,19 @@ const features = [
     title: 'Direct Equity PMS',
     description: 'Personalized portfolio management services with direct stocks and securities for higher returns potential.',
     icon: BarChart2,
+    link: '/direct-equity-pms',
   },
   {
     title: 'Risk Profiling & Financial Planning',
     description: 'Scientific assessment of your risk appetite paired with comprehensive financial roadmapping.',
     icon: Shield,
+    link: '/financial-planning',
   },
   {
     title: 'Wealth Monitor App',
     description: 'Track all your investments in real-time with powerful analytics and performance insights.',
     icon: Activity,
+    link: '/wealth-monitor-app',
   }
 ];
 
@@ -54,7 +57,9 @@ const WhyChooseUs: React.FC = () => {
               {feature.link && (
                 <Link to={feature.link}>
                   <Button variant="outline" size="sm" className="mt-2">
-                    Explore Funds
+                    {index === 0 ? 'Explore Funds' : 
+                     index === 1 ? 'Learn More' :
+                     index === 2 ? 'Get Assessment' : 'Download App'}
                   </Button>
                 </Link>
               )}

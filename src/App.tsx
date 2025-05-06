@@ -20,6 +20,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import InvestmentAnalyzer from "./pages/InvestmentAnalyzer";
 import Team from "./pages/Team";
+import WealthMonitorApp from "./pages/WealthMonitorApp";
+import DirectEquityPMS from "./pages/DirectEquityPMS";
+import FinancialPlanning from "./pages/FinancialPlanning";
 
 const App = () => {
   // Create a client
@@ -53,6 +56,9 @@ const App = () => {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/investment-analyzer" element={<InvestmentAnalyzer />} />
                 <Route path="/team" element={<Team />} />
+                <Route path="/wealth-monitor-app" element={<WealthMonitorApp />} />
+                <Route path="/direct-equity-pms" element={<DirectEquityPMS />} />
+                <Route path="/financial-planning" element={<FinancialPlanning />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
