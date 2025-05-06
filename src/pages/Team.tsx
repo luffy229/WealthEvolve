@@ -2,10 +2,10 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { User3D, UserRound, Users, UserCheck } from 'lucide-react';
+import { User, Users, UserCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
 
 const teamMembers = [
@@ -14,7 +14,7 @@ const teamMembers = [
     role: "Chief Executive Officer",
     bio: "With over 15 years in wealth management, Sarah leads our vision to revolutionize personal finance through technology and human expertise.",
     skills: ["Strategic Leadership", "Financial Markets", "Client Relations"],
-    icon: UserRound,
+    icon: User,
     color: "bg-wealth-teal",
     image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?fit=crop&w=800&h=800"
   },
@@ -23,7 +23,7 @@ const teamMembers = [
     role: "Chief Technology Officer",
     bio: "Michael brings 12+ years of experience in fintech development, focusing on AI solutions that make financial data meaningful and accessible.",
     skills: ["AI Development", "System Architecture", "Data Security"],
-    icon: User3D,
+    icon: User,
     color: "bg-blue-500",
     image: "https://images.unsplash.com/photo-1527576539890-dfa815648363?fit=crop&w=800&h=800"
   },

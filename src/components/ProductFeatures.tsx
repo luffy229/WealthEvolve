@@ -52,13 +52,13 @@ function PhoneModel() {
       {/* Home button */}
       <mesh position={[0, -1, 0.06]} castShadow>
         <cylinderGeometry args={[0.1, 0.1, 0.02, 32]} />
-        <meshStandardMaterial color="#333" />
+        <meshStandardMaterial color="#333333" />
       </mesh>
       
       {/* Camera */}
       <mesh position={[0, 0.85, 0.06]} castShadow>
         <cylinderGeometry args={[0.05, 0.05, 0.02, 32]} />
-        <meshStandardMaterial color="#111" />
+        <meshStandardMaterial color="#111111" />
       </mesh>
       
       {/* App icons (simplified as colored squares) */}
@@ -70,9 +70,9 @@ function PhoneModel() {
         [0, 0, 0.07, "#9b59b6"],
         [0.3, 0, 0.07, "#e67e22"],
       ].map((params, i) => (
-        <mesh key={i} position={[params[0], params[1], params[2]]} castShadow>
+        <mesh key={i} position={[params[0] as number, params[1] as number, params[2] as number]} castShadow>
           <boxGeometry args={[0.18, 0.18, 0.01]} />
-          <meshStandardMaterial color={params[3]} />
+          <meshStandardMaterial color={params[3] as string} />
         </mesh>
       ))}
     </group>
