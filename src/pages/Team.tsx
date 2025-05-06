@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
+import * as THREE from 'three';
 
 const teamMembers = [
   {
@@ -54,13 +55,13 @@ function UserIcon() {
       {/* Head */}
       <mesh position={[0, 0.3, 0]} castShadow>
         <sphereGeometry args={[0.2, 32, 32]} />
-        <meshStandardMaterial color="#2CA6A4" />
+        <meshStandardMaterial color={new THREE.Color("#2CA6A4")} />
       </mesh>
       
       {/* Body */}
       <mesh position={[0, -0.1, 0]} castShadow>
         <cylinderGeometry args={[0.15, 0.25, 0.5, 32]} />
-        <meshStandardMaterial color="#2C3E50" />
+        <meshStandardMaterial color={new THREE.Color("#2C3E50")} />
       </mesh>
     </group>
   );

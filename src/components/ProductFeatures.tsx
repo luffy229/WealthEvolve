@@ -4,6 +4,7 @@ import { Phone, Target, Shield, BarChart2, FileText } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
 
 const products = [
   {
@@ -40,25 +41,29 @@ function PhoneModel() {
       {/* Phone base */}
       <mesh position={[0, 0, 0]} castShadow>
         <boxGeometry args={[1, 2, 0.1]} />
-        <meshStandardMaterial color="#2C3E50" />
+        <meshStandardMaterial color={new THREE.Color("#2C3E50")} />
       </mesh>
       
       {/* Screen */}
       <mesh position={[0, 0, 0.06]} castShadow>
         <boxGeometry args={[0.9, 1.8, 0.01]} />
-        <meshStandardMaterial color="#2CA6A4" emissive="#2CA6A4" emissiveIntensity={0.5} />
+        <meshStandardMaterial 
+          color={new THREE.Color("#2CA6A4")} 
+          emissive={new THREE.Color("#2CA6A4")} 
+          emissiveIntensity={0.5} 
+        />
       </mesh>
       
       {/* Home button */}
       <mesh position={[0, -1, 0.06]} castShadow>
         <cylinderGeometry args={[0.1, 0.1, 0.02, 32]} />
-        <meshStandardMaterial color="#333333" />
+        <meshStandardMaterial color={new THREE.Color("#333333")} />
       </mesh>
       
       {/* Camera */}
       <mesh position={[0, 0.85, 0.06]} castShadow>
         <cylinderGeometry args={[0.05, 0.05, 0.02, 32]} />
-        <meshStandardMaterial color="#111111" />
+        <meshStandardMaterial color={new THREE.Color("#111111")} />
       </mesh>
       
       {/* App icons (simplified as colored squares) */}
@@ -72,7 +77,7 @@ function PhoneModel() {
       ].map((params, i) => (
         <mesh key={i} position={[params[0] as number, params[1] as number, params[2] as number]} castShadow>
           <boxGeometry args={[0.18, 0.18, 0.01]} />
-          <meshStandardMaterial color={params[3] as string} />
+          <meshStandardMaterial color={new THREE.Color(params[3] as string)} />
         </mesh>
       ))}
     </group>
