@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -58,6 +57,35 @@ const PerformanceChart: React.FC = () => {
   // Calculate the highest and lowest values
   const highestValue = Math.max(...performanceData[timeFrame].map(item => item.wealthEvolve));
   const lowestValue = Math.min(...performanceData[timeFrame].map(item => item.traditional || item.wealthEvolve));
+
+  // Custom tooltip content renderer
+  const customTooltipContent = (props: any) => {
+    const { active, payload, label } = props;
+    
+    if (active && payload && payload.length) {
+      // Update the highlighted month when tooltip is active
+      if (highlightedMonth !== label) {
+        setHighlightedMonth(label);
+      }
+      
+      return (
+        <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-100">
+          <p className="font-medium text-wealth-navy">{`Period: ${label}`}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={`item-${index}`} style={{ color: entry.color }}>
+              {`${entry.name}: ${entry.value}%`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+  
+  // Handle tooltip hide
+  const handleMouseLeave = () => {
+    setHighlightedMonth(null);
+  };
 
   return (
     <section id="performance" className="section-padding py-24 bg-gradient-to-b from-white to-wealth-light relative overflow-hidden">
@@ -135,7 +163,7 @@ const PerformanceChart: React.FC = () => {
             </div>
           </div>
           
-          <div className="h-80 relative">
+          <div className="h-80 relative" onMouseLeave={handleMouseLeave}>
             {chartLoaded ? (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -165,18 +193,13 @@ const PerformanceChart: React.FC = () => {
                     <Tooltip 
                       formatter={(value) => [`${value}%`, undefined]} 
                       labelFormatter={(label) => `Period: ${label}`}
+                      content={customTooltipContent}
                       contentStyle={{ 
                         backgroundColor: '#fff', 
                         borderColor: '#e5e7eb',
                         borderRadius: '8px',
                         boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)'
                       }}
-                      onMouseEnter={(data) => {
-                        if (data.activeLabel) {
-                          setHighlightedMonth(data.activeLabel as string);
-                        }
-                      }}
-                      onMouseLeave={() => setHighlightedMonth(null)}
                     />
                     <Area
                       type="monotone"
