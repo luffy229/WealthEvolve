@@ -9,6 +9,7 @@ import Testimonials from '@/components/Testimonials';
 import ProductFeatures from '@/components/ProductFeatures';
 import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
+import ChatbotAgent from '@/components/ChatbotAgent';
 
 const Index: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const Index: React.FC = () => {
         <CallToAction />
       </main>
       <Footer />
+      <ChatbotAgent />
     </div>
   );
 };
