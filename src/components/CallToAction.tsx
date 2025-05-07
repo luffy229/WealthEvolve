@@ -18,7 +18,7 @@ const CallToAction: React.FC = () => {
               <Button size="lg" className="bg-wealth-teal hover:bg-opacity-90 text-white font-medium py-6 px-8 rounded-lg text-lg">
                 Create Your Plan
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-wealth-navy font-medium py-6 px-8 rounded-lg text-lg">
+              <Button size="lg" variant="outline" className="border-white text-black hover:bg-white hover:text-wealth-navy font-medium py-6 px-8 rounded-lg text-lg">
                 Book a Free Call
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>

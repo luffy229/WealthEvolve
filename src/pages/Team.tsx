@@ -11,16 +11,16 @@ import * as THREE from 'three';
 
 const teamMembers = [
   {
-    name: "Sarah Johnson",
+    name: "Pratik A Pal",
     role: "Chief Executive Officer",
     bio: "With over 15 years in wealth management, Sarah leads our vision to revolutionize personal finance through technology and human expertise.",
     skills: ["Strategic Leadership", "Financial Markets", "Client Relations"],
     icon: User,
     color: "bg-wealth-teal",
-    image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?fit=crop&w=800&h=800"
+    image: "profile-img.jpg"
   },
   {
-    name: "Michael Chen",
+    name: "Adeeb Ahmed Khan",
     role: "Chief Technology Officer",
     bio: "Michael brings 12+ years of experience in fintech development, focusing on AI solutions that make financial data meaningful and accessible.",
     skills: ["AI Development", "System Architecture", "Data Security"],
@@ -29,7 +29,7 @@ const teamMembers = [
     image: "https://images.unsplash.com/photo-1527576539890-dfa815648363?fit=crop&w=800&h=800"
   },
   {
-    name: "Elena Rodriguez",
+    name: "Devanshi Sahu",
     role: "Head of Investment Research",
     bio: "Elena's background in quantitative finance drives our research team to discover unique investment opportunities and portfolio strategies.",
     skills: ["Market Analysis", "Risk Assessment", "Portfolio Construction"],
@@ -38,7 +38,7 @@ const teamMembers = [
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?fit=crop&w=800&h=800"
   },
   {
-    name: "David Okafor",
+    name: "Saishree Talekar",
     role: "Client Success Director",
     bio: "David ensures every client achieves their wealth goals through personalized guidance and exceptional service standards.",
     skills: ["Client Education", "Financial Planning", "Relationship Management"],

@@ -118,7 +118,7 @@ const FinancialPlanning: React.FC = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="border-white text-white hover:bg-white hover:text-wealth-navy transition-all hover:shadow-lg"
+                    className="border-white text-white hover:bg-white text-black hover:text-wealth-navy transition-all hover:shadow-lg"
                   >
                     Book Consultation
                   </Button>
@@ -399,7 +399,7 @@ const FinancialPlanning: React.FC = () => {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="border-white text-white hover:bg-white hover:text-wealth-navy transition-all hover:shadow-lg"
+                  className="border-white text-black hover:bg-white hover:text-wealth-navy transition-all hover:shadow-lg"
                 >
                   Schedule Consultation
                 </Button>

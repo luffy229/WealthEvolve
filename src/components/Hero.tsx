@@ -99,7 +99,7 @@ const Hero: React.FC = () => {
           
           <motion.div variants={item} className="flex flex-col sm:flex-row sm:items-center justify-center gap-4 mb-12">
             <Button size="lg" className="bg-wealth-teal hover:bg-opacity-90 text-white font-medium py-3 px-8 rounded-lg text-lg animate-pulse-glow">Get Started</Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-wealth-navy font-medium py-3 px-8 rounded-lg text-lg">
+            <Button size="lg" variant="outline" className="border-white text-black hover:bg-white hover:text-wealth-navy font-medium py-3 px-8 rounded-lg text-lg">
               Talk to an Advisor
               <motion.div
                 animate={{ x: [0, 4, 0] }}

@@ -105,7 +105,7 @@ const DirectEquityPMS: React.FC = () => {
                   <Button size="lg" className="bg-wealth-teal hover:bg-opacity-90 text-white shadow-lg shadow-wealth-teal/30 hover:shadow-wealth-teal/40 transition-all hover:translate-y-[-2px]">
                     Schedule Consultation
                   </Button>
-                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-wealth-navy transition-all hover:shadow-lg">
+                  <Button variant="outline" className="border-white text-black hover:bg-white hover:text-wealth-navy transition-all hover:shadow-lg">
                     Download Brochure
                   </Button>
                 </motion.div>
@@ -363,7 +363,7 @@ const DirectEquityPMS: React.FC = () => {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="border-white text-white hover:bg-white hover:text-wealth-navy transition-all hover:shadow-lg"
+                  className="border-white text-black hover:bg-white hover:text-wealth-navy transition-all hover:shadow-lg"
                 >
                   Learn More About Our Process
                 </Button>

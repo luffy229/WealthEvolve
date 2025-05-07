@@ -393,7 +393,7 @@ const WealthMonitorApp: React.FC = () => {
                     </Button>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button variant="outline" className="border-white text-white hover:bg-white hover:text-wealth-navy">
+                    <Button variant="outline" className="border-white text-black hover:bg-white hover:text-wealth-navy">
                       Watch Demo
                     </Button>
                   </motion.div>
