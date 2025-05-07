@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -9,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Trophy, TrendingUp, Award, ChartPie, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Check } from '@/components/ui/check';
 
 // Questionnaire result interface
 export interface QuestionnaireResult {
