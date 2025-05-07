@@ -8,7 +8,6 @@ import { Download, ChartPie, BarChart as BarChartIcon, TrendingUp, AlertTriangle
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
 
 interface OverlapResultsProps {
   data: {
@@ -23,18 +22,14 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
   const [activeTab, setActiveTab] = useState<string>("summary");
   const [animationComplete, setAnimationComplete] = useState<boolean>(false);
 
-  // Set animation complete state immediately
   useEffect(() => {
-    setAnimationComplete(true);
+    // Start the entrance animation
+    const timer = setTimeout(() => {
+      setAnimationComplete(true);
+    }, 1200);
     
-    // Log data to console for debugging
-    console.log("OverlapResults rendered with data:", data);
-    
-    // This component should stay mounted as long as data is provided
-    return () => {
-      console.log("OverlapResults unmounting");
-    };
-  }, [data]);
+    return () => clearTimeout(timer);
+  }, []);
   
   const handleExport = () => {
     // In a real app, implement PDF/CSV export functionality
@@ -85,7 +80,7 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
   };
 
   return (
-    <div id="overlap-results" className="space-y-6">
+    <div className="space-y-6">
       <div className="bg-white rounded-xl p-6 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-wealth-navy flex items-center">
@@ -133,16 +128,19 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                       const key = `${pair[0]}-${pair[1]}`;
                       const overlapPercentage = data.overlapPercentages[key] || 0;
                       return (
-                        <TableRow key={idx}>
+                        <TableRow key={idx} className={
+                          animationComplete ? `animate-fade-in` : ''
+                        } style={{ animationDelay: `${idx * 100}ms` }}>
                           <TableCell>{data.fundNames[pair[0]]} & {data.fundNames[pair[1]]}</TableCell>
                           <TableCell className="text-right">
                             <div className="flex items-center justify-end gap-2">
                               <Progress 
                                 value={overlapPercentage} 
-                                className={cn("w-24 h-2", {
-                                  "bg-slate-200": true,
-                                })}
-                                color={overlapPercentage > 30 ? "bg-red-500" : overlapPercentage > 15 ? "bg-amber-500" : "bg-green-500"}
+                                className="w-24 h-2"
+                                style={{
+                                  background: 'rgba(226, 232, 240, 0.6)',
+                                }}
+                                color={overlapPercentage > 30 ? 'bg-red-500' : overlapPercentage > 15 ? 'bg-amber-500' : 'bg-green-500'}
                               />
                               <span className={`font-medium ${overlapPercentage > 30 ? 'text-red-600' : overlapPercentage > 15 ? 'text-amber-600' : 'text-green-600'}`}>
                                 {overlapPercentage.toFixed(2)}%
@@ -187,12 +185,12 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                 </div>
                 
                 <ul className="list-disc pl-5 space-y-2 text-wealth-gray">
-                  <li>
+                  <li className="animate-fade-in" style={{ animationDelay: "200ms" }}>
                     {Object.values(data.overlapPercentages)[0] > 30 
                       ? <span className="text-red-600 font-medium">High overlap suggests you might be paying management fees for similar investments.</span>
                       : <span className="text-green-600 font-medium">Your funds appear to be well-diversified with minimal redundancy.</span>}
                   </li>
-                  <li>
+                  <li className="animate-fade-in" style={{ animationDelay: "300ms" }}>
                     Consider funds with complementary sector exposures for better diversification.
                   </li>
                 </ul>
@@ -212,11 +210,9 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                     config={{
                       overlap: {
                         color: '#8B5CF6',
-                        label: 'Overlap %'
                       },
                       unique: {
                         color: '#00C49F',
-                        label: 'Unique %'
                       },
                     }}
                   >
@@ -225,7 +221,7 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                         <XAxis dataKey="name" />
                         <YAxis domain={[0, 100]} />
                         <Tooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="overlap" fill="#8B5CF6" name="overlap" />
+                        <Bar dataKey="overlap" fill="#8B5CF6" name="Overlap %" className="animate-chart-line" />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
@@ -240,12 +236,18 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                 <div className="h-[300px]">
                   <ChartContainer
                     config={{
-                      Overlap: {
-                        color: '#0088FE',
+                      overlap: {
+                        theme: {
+                          light: '#8B5CF6',
+                          dark: '#8B5CF6', 
+                        },
                         label: 'Overlapping Holdings',
                       },
-                      'Unique Holdings': {
-                        color: '#00C49F',
+                      unique: {
+                        theme: {
+                          light: '#00C49F',
+                          dark: '#00C49F',
+                        },
                         label: 'Unique Holdings',
                       },
                     }}
@@ -261,7 +263,7 @@ const OverlapResults: React.FC<OverlapResultsProps> = ({ data }) => {
                           fill="#8884d8"
                           dataKey="value"
                           nameKey="name"
-
+                          className="animate-chart-line"
                         >
                           {pieData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Form, 
@@ -45,11 +45,6 @@ const OverlapAnalyzer: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [analysisProgress, setAnalysisProgress] = useState<number>(0);
 
-  // Log when results change
-  useEffect(() => {
-    console.log("Results state changed:", results);
-  }, [results]);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +56,6 @@ const OverlapAnalyzer: React.FC = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     try {
-      // Don't reset results until we have new ones
       setIsLoading(true);
       setAnalysisProgress(0);
       
@@ -77,34 +71,24 @@ const OverlapAnalyzer: React.FC = () => {
       const selectedFunds = [values.fund1, values.fund2];
       if (values.fund3) selectedFunds.push(values.fund3);
       
-      // Calculate overlap
-      const overlapData = calculateOverlap(selectedFunds);
-      
       // Simulate analysis taking time
       setTimeout(() => {
+        // Calculate overlap between selected funds
+        const overlapData = calculateOverlap(selectedFunds);
+        setResults(overlapData);
+        
         clearInterval(progressInterval);
         setAnalysisProgress(100);
         
         setTimeout(() => {
-          // Set results and complete loading
-          console.log("Setting results:", overlapData);
-          setResults(overlapData);
           setIsLoading(false);
           
           toast({
             title: "Analysis Complete",
             description: "Portfolio overlap analysis has been calculated successfully.",
           });
-          
-          // Scroll to results
-          setTimeout(() => {
-            const resultsElement = document.getElementById('overlap-results');
-            if (resultsElement) {
-              resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }, 100);
         }, 500);
-      }, 1500);
+      }, 2200);
     } catch (error) {
       console.error("Overlap calculation error:", error);
       setIsLoading(false);
@@ -135,7 +119,7 @@ const OverlapAnalyzer: React.FC = () => {
                 control={form.control}
                 name="fund1"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="animate-fade-in" style={{ animationDelay: "0ms" }}>
                     <FormLabel className="font-medium text-wealth-navy">Fund 1</FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -164,7 +148,7 @@ const OverlapAnalyzer: React.FC = () => {
                 control={form.control}
                 name="fund2"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="animate-fade-in" style={{ animationDelay: "100ms" }}>
                     <FormLabel className="font-medium text-wealth-navy">Fund 2</FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -193,7 +177,7 @@ const OverlapAnalyzer: React.FC = () => {
                 control={form.control}
                 name="fund3"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="animate-fade-in" style={{ animationDelay: "200ms" }}>
                     <FormLabel className="font-medium text-wealth-navy">Fund 3 (Optional)</FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -220,7 +204,7 @@ const OverlapAnalyzer: React.FC = () => {
             </div>
             
             {isLoading && (
-              <div className="py-4 bg-gradient-to-r from-wealth-light to-white p-4 rounded-lg shadow-inner">
+              <div className="py-4 animate-fade-in bg-gradient-to-r from-wealth-light to-white p-4 rounded-lg shadow-inner">
                 <div className="flex justify-between text-sm mb-2">
                   <span className="font-medium text-wealth-navy">Analyzing portfolios...</span>
                   <span className="text-wealth-teal font-bold">{Math.round(analysisProgress)}%</span>
@@ -233,7 +217,7 @@ const OverlapAnalyzer: React.FC = () => {
               </div>
             )}
             
-            <div className="flex justify-center">
+            <div className="flex justify-center animate-fade-in" style={{ animationDelay: "300ms" }}>
               <Button 
                 type="submit" 
                 size="lg"
@@ -260,10 +244,8 @@ const OverlapAnalyzer: React.FC = () => {
         </Form>
       </div>
       
-      {/* Always render OverlapResults if results exist */}
       {results && <OverlapResults data={results} />}
       
-      {/* Only show the info section if no results */}
       {!results && (
         <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-wealth-light/50">
           <div className="text-center space-y-4">
@@ -286,15 +268,15 @@ const OverlapAnalyzer: React.FC = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-              <div className="p-4 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100/50 border border-amber-100 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105">
+              <div className="p-4 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100/50 border border-amber-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105" style={{ animationDelay: "100ms" }}>
                 <h4 className="font-medium text-amber-800 mb-2">Risk Concentration</h4>
                 <p className="text-sm text-amber-700">Overlapping funds can amplify exposure to specific sectors or stocks</p>
               </div>
-              <div className="p-4 rounded-lg bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-100 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105">
+              <div className="p-4 rounded-lg bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105" style={{ animationDelay: "200ms" }}>
                 <h4 className="font-medium text-emerald-800 mb-2">Fee Efficiency</h4>
                 <p className="text-sm text-emerald-700">Why pay multiple management fees for the same underlying assets?</p>
               </div>
-              <div className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-100 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105">
+              <div className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105" style={{ animationDelay: "300ms" }}>
                 <h4 className="font-medium text-blue-800 mb-2">True Diversification</h4>
                 <p className="text-sm text-blue-700">Analyze your actual exposure across asset classes and sectors</p>
               </div>
