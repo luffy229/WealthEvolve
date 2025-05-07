@@ -21,7 +21,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { ChartPie, ArrowRight, Info } from 'lucide-react';
+import { Clock, BarChart4, ArrowRight, Info } from 'lucide-react';
 import OverlapResults from '@/components/OverlapResults';
 import { mutualFunds, calculateOverlap } from '@/lib/fundData';
 import { Progress } from '@/components/ui/progress';
@@ -108,7 +108,7 @@ const OverlapAnalyzer: React.FC = () => {
         <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-wealth-navy/5 rounded-full"></div>
         
         <h2 className="text-xl font-semibold text-wealth-navy mb-6 flex items-center">
-          <ChartPie className="mr-2 text-wealth-teal" />
+          <Clock className="mr-2 text-wealth-teal" />
           Select Funds to Compare
         </h2>
         

@@ -12,7 +12,7 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { ChartPie, BarChart, TrendingUp, Info } from 'lucide-react';
+import { ChartPie, BarChart4, TrendingUp, Clock } from 'lucide-react';
 
 const container = {
   hidden: { opacity: 0 },
@@ -104,7 +104,7 @@ const PortfolioOverlap: React.FC = () => {
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 className="text-wealth-teal"
               >
-                <Info className="h-8 w-8" />
+                <Clock className="h-8 w-8" />
               </motion.div>
               <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-wealth-navy via-wealth-teal to-wealth-navy bg-clip-text text-transparent">
                 Portfolio Overlap Analyzer
@@ -144,7 +144,7 @@ const PortfolioOverlap: React.FC = () => {
               <Card className="border-wealth-teal/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:bg-white hover:-translate-y-1">
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center text-wealth-navy">
-                    <BarChart className="mr-2 h-5 w-5 text-wealth-teal" />
+                    <BarChart4 className="mr-2 h-5 w-5 text-wealth-teal" />
                     Visual Insights
                   </CardTitle>
                 </CardHeader>

@@ -24,8 +24,8 @@ const Index: React.FC = () => {
         <ProductFeatures />
         <CallToAction />
       </main>
-      <Footer />
       <ChatbotAgent />
+      <Footer />
     </div>
   );
 };

@@ -2,8 +2,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { MessageCircle, X, Send, Bot, ArrowRight, Check } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { Info, Search } from 'lucide-react';
 
 interface Message {
   id: number;
@@ -160,7 +160,7 @@ const ChatbotAgent: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="text-white"
           >
-            {isOpen ? <Search size={24} /> : <Info size={24} />}
+            {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
           </motion.div>
         </Button>
         
@@ -198,7 +198,7 @@ const ChatbotAgent: React.FC = () => {
             <div className="bg-gradient-to-r from-wealth-navy to-wealth-teal p-4 text-white shadow-md flex items-center justify-between">
               <div className="flex items-center">
                 <div className="bg-white p-2 rounded-full mr-3">
-                  <Info className="h-5 w-5 text-wealth-navy" />
+                  <Bot className="h-5 w-5 text-wealth-navy" />
                 </div>
                 <div>
                   <h3 className="font-medium text-sm">Eva | WealthEvolve AI</h3>
@@ -224,7 +224,7 @@ const ChatbotAgent: React.FC = () => {
                       animate={{ rotate: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <Search className="h-4 w-4" />
+                      <ArrowRight className="h-4 w-4" />
                     </motion.div>
                     :
                     <motion.div
@@ -235,16 +235,9 @@ const ChatbotAgent: React.FC = () => {
                         repeatDelay: 0.1
                       }}
                     >
-                      <Search className="h-4 w-4 rotate-90" />
+                      <ArrowRight className="h-4 w-4 rotate-90" />
                     </motion.div>
                   }
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="h-8 w-8 text-white opacity-80 hover:opacity-100 hover:bg-white/10"
-                >
-                  <Info className="h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -315,7 +308,9 @@ const ChatbotAgent: React.FC = () => {
                                           handleSuggestionClick(option)
                                         }
                                       >
-                                        {option}
+                                        {option === "Thank you" ? (
+                                          <><Check className="h-3 w-3 mr-1" /> {option}</>
+                                        ) : option}
                                       </Button>
                                     ))}
                                   </div>
@@ -346,7 +341,7 @@ const ChatbotAgent: React.FC = () => {
                         disabled={!inputValue.trim() || isTyping}
                         className={`ml-2 h-8 w-8 p-0 ${!inputValue.trim() || isTyping ? 'bg-gray-300' : 'bg-gradient-to-r from-wealth-teal to-wealth-navy hover:from-wealth-navy hover:to-wealth-teal'} text-white rounded-full`}
                       >
-                        <Search className="h-4 w-4" />
+                        <Send className="h-4 w-4" />
                       </Button>
                     </div>
                     <div className="text-center mt-2">
