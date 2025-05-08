@@ -1,14 +1,11 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
 import { Activity, Smartphone, BarChart2, PieChart, Bell, Lock, Download, ArrowRight, CheckCircle2, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import * as THREE from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 
@@ -96,86 +93,66 @@ const QRCode: React.FC = () => {
   );
 };
 
-// 3D Phone Model Component
-function PhoneModel() {
+// 3D Phone Model Fallback Component
+const PhoneModelFallback = () => {
   return (
-    <group>
-      {/* Phone base */}
-      <mesh position={[0, 0, 0]} castShadow>
-        <boxGeometry args={[1, 2, 0.1]} />
-        <meshStandardMaterial color={new THREE.Color("#2C3E50")} />
-      </mesh>
+    <div className="relative h-[400px] w-[200px] flex items-center justify-center">
+      <div className="bg-wealth-navy rounded-[2rem] p-2 shadow-xl h-full w-full">
+        <div className="bg-black rounded-[1.5rem] overflow-hidden h-full w-full relative">
+          <div className="h-8 bg-wealth-navy flex items-center justify-center">
+            <div className="h-2 w-16 bg-black rounded-b-md"></div>
+          </div>
+          
+          <div className="p-4 h-full">
+            {/* App Chart Visualization (Static) */}
+            <div className="mt-8 mb-6">
+              <div className="w-full h-40 bg-wealth-teal/10 rounded-xl p-3">
+                <div className="h-6 w-20 bg-wealth-teal/30 rounded-md mb-3"></div>
+                <div className="flex items-end h-20 space-x-1 justify-between">
+                  {[0.4, 0.25, 0.6, 0.3, 0.5].map((height, i) => (
+                    <div 
+                      key={i} 
+                      className={`w-8 rounded-t ${i % 2 === 0 ? 'bg-wealth-teal' : 'bg-wealth-gold'}`}
+                      style={{ height: `${height * 100}%` }}
+                    ></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Pie chart (Static) */}
+            <div className="mt-6 flex justify-center">
+              <div className="w-24 h-24 rounded-full relative overflow-hidden">
+                <div className="absolute inset-0 bg-wealth-teal" style={{ clipPath: 'polygon(50% 50%, 100% 50%, 100% 100%, 0 100%, 0 50%)' }}></div>
+                <div className="absolute inset-0 bg-wealth-gold" style={{ clipPath: 'polygon(50% 50%, 100% 0, 100% 50%)' }}></div>
+                <div className="absolute inset-0 bg-blue-500" style={{ clipPath: 'polygon(50% 50%, 0 0, 100% 0)' }}></div>
+                <div className="absolute inset-0 bg-wealth-navy" style={{ clipPath: 'polygon(50% 50%, 0 50%, 0 0)' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      {/* Screen */}
-      <mesh position={[0, 0, 0.06]} castShadow>
-        <boxGeometry args={[0.9, 1.8, 0.01]} />
-        <meshStandardMaterial 
-          color={new THREE.Color("#2CA6A4")} 
-          emissive={new THREE.Color("#2CA6A4")} 
-          emissiveIntensity={0.5} 
-        />
-      </mesh>
-      
-      {/* Home button */}
-      <mesh position={[0, -1, 0.06]} castShadow>
-        <cylinderGeometry args={[0.1, 0.1, 0.02, 32]} />
-        <meshStandardMaterial color={new THREE.Color("#333333")} />
-      </mesh>
-      
-      {/* Camera */}
-      <mesh position={[0, 0.85, 0.06]} castShadow>
-        <cylinderGeometry args={[0.05, 0.05, 0.02, 32]} />
-        <meshStandardMaterial color={new THREE.Color("#111111")} />
-      </mesh>
-      
-      {/* App chart visualization */}
-      <group position={[0, 0.1, 0.07]}>
-        {/* Chart bars */}
-        {[0.4, 0.25, 0.6, 0.3, 0.5].map((height, i) => (
-          <mesh key={i} position={[-0.3 + i * 0.15, -0.2 - height/2, 0]} castShadow>
-            <boxGeometry args={[0.08, height, 0.01]} />
-            <meshStandardMaterial color={new THREE.Color(i % 2 === 0 ? "#2CA6A4" : "#f1c40f")} />
-          </mesh>
-        ))}
-        
-        {/* Pie chart */}
-        <mesh position={[0, 0.4, 0]} castShadow>
-          <cylinderGeometry args={[0.3, 0.3, 0.01, 32]} />
-          <meshStandardMaterial color={new THREE.Color("#ecf0f1")} />
-        </mesh>
-        <mesh position={[0, 0.4, 0.01]} castShadow rotation={[0, 0, 0]}>
-          <cylinderGeometry args={[0.3, 0.3, 0.01, 32, 1, false, 0, Math.PI * 0.7]} />
-          <meshStandardMaterial color={new THREE.Color("#2CA6A4")} />
-        </mesh>
-        <mesh position={[0, 0.4, 0.01]} castShadow rotation={[0, 0, Math.PI * 0.7]}>
-          <cylinderGeometry args={[0.3, 0.3, 0.01, 32, 1, false, 0, Math.PI * 0.5]} />
-          <meshStandardMaterial color={new THREE.Color("#f1c40f")} />
-        </mesh>
-        <mesh position={[0, 0.4, 0.01]} castShadow rotation={[0, 0, Math.PI * 1.2]}>
-          <cylinderGeometry args={[0.3, 0.3, 0.01, 32, 1, false, 0, Math.PI * 0.8]} />
-          <meshStandardMaterial color={new THREE.Color("#3498db")} />
-        </mesh>
-      </group>
-    </group>
+      {/* Animated rings */}
+      <motion.div 
+        className="absolute -z-10 rounded-full border-4 border-wealth-teal/30 w-[220px] h-[220px]"
+        animate={{ 
+          scale: [1, 1.1, 1],
+          opacity: [0.5, 0.3, 0.5] 
+        }}
+        transition={{ duration: 3, repeat: Infinity }}
+      ></motion.div>
+      <motion.div 
+        className="absolute -z-10 rounded-full border-2 border-wealth-teal/20 w-[260px] h-[260px]"
+        animate={{ 
+          scale: [1, 1.15, 1],
+          opacity: [0.3, 0.1, 0.3] 
+        }}
+        transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
+      ></motion.div>
+    </div>
   );
-}
-
-function Scene() {
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
-      <PhoneModel />
-      <OrbitControls 
-        enableZoom={false}
-        autoRotate
-        autoRotateSpeed={3}
-        minPolarAngle={Math.PI / 3}
-        maxPolarAngle={Math.PI / 1.5}
-      />
-    </>
-  );
-}
+};
 
 // Animated Feature Component
 const AnimatedFeature = ({ feature, index }: { feature: any; index: number }) => {
@@ -249,7 +226,7 @@ const WealthMonitorApp: React.FC = () => {
   const [showBadge, setShowBadge] = useState(false);
   
   // Auto-rotate phone screens
-  useEffect(() => {
+  React.useEffect(() => {
     const interval = setInterval(() => {
       setActiveScreen((prev) => (prev + 1) % 4);
     }, 3000);
@@ -316,7 +293,7 @@ const WealthMonitorApp: React.FC = () => {
   ];
   
   // Show badge after 2 seconds
-  useEffect(() => {
+  React.useEffect(() => {
     const timer = setTimeout(() => {
       setShowBadge(true);
     }, 2000);
@@ -425,7 +402,7 @@ const WealthMonitorApp: React.FC = () => {
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
                 <div className="relative w-[280px] h-[500px]">
-                  {/* 3D Phone Model */}
+                  {/* Phone Model */}
                   <div className="bg-wealth-navy rounded-[3rem] p-2 shadow-2xl h-[90%] w-full">
                     <div className="bg-black rounded-[2.5rem] overflow-hidden h-full w-full relative">
                       <div className="bg-wealth-navy h-10 flex justify-center items-center">
@@ -594,7 +571,7 @@ const WealthMonitorApp: React.FC = () => {
           </div>
         </section>
         
-        {/* 3D Model Section */}
+        {/* Phone Model Fallback Section */}
         <section className="py-24 bg-gray-50 relative overflow-hidden">
           <motion.div 
             className="absolute inset-0"
@@ -616,35 +593,13 @@ const WealthMonitorApp: React.FC = () => {
             >
               <h2 className="text-4xl font-serif font-bold text-wealth-navy mb-6">Interactive App Demo</h2>
               <p className="text-wealth-gray text-lg">
-                Explore our app's sleek design and powerful features with this interactive 3D demo
+                Explore our app's sleek design and powerful features
               </p>
             </motion.div>
             
-            <div className="h-[400px] md:h-[500px] w-full rounded-xl overflow-hidden shadow-2xl">
-              <React.Suspense fallback={
-                <div className="w-full h-full bg-gray-800 flex items-center justify-center text-white">
-                  <motion.div 
-                    className="h-10 w-10 border-4 border-t-wealth-teal rounded-full"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  />
-                </div>
-              }>
-                <Canvas camera={{ position: [0, 0, 3] }} className="h-full w-full">
-                  <Scene />
-                </Canvas>
-              </React.Suspense>
+            <div className="flex justify-center">
+              <PhoneModelFallback />
             </div>
-            
-            <motion.div 
-              className="text-center mt-4 text-sm text-wealth-gray"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 }}
-            >
-              Interact with the 3D model by clicking and dragging
-            </motion.div>
           </div>
         </section>
         

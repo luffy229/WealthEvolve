@@ -1,10 +1,7 @@
 
-import React, { Suspense, useState, useRef } from 'react';
+import React, { Suspense, useState, useRef, useEffect } from 'react';
 import { Phone, Target, Shield, BarChart2, FileText, ArrowRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Float } from '@react-three/drei';
-import * as THREE from 'three';
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
 
@@ -41,128 +38,124 @@ const products = [
   }
 ];
 
-// 3D Components
-function PhoneModel() {
-  const [hovering, setHovering] = useState(false);
+// Fallback Phone Model Component
+const PhoneModelFallback = () => {
+  const [isHovered, setIsHovered] = useState(false);
   
   return (
-    <group
-      onPointerOver={() => setHovering(true)}
-      onPointerOut={() => setHovering(false)}
-      scale={hovering ? 1.05 : 1}
-      position={[0, 0, 0]}
+    <div 
+      className="relative w-[280px] h-[500px]" 
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Phone base */}
-      <mesh position={[0, 0, 0]} castShadow>
-        <boxGeometry args={[1, 2, 0.1]} />
-        <meshStandardMaterial 
-          color={new THREE.Color("#2C3E50")} 
-          metalness={0.6}
-          roughness={0.2}
-        />
-      </mesh>
+      <div className="bg-wealth-navy rounded-[3rem] p-2 shadow-xl h-full w-full relative z-10">
+        <div className="bg-black rounded-[2.5rem] overflow-hidden h-full w-full relative">
+          {/* Phone screen */}
+          <div className="bg-wealth-navy h-10 flex justify-center items-center">
+            <div className="w-20 h-6 bg-black rounded-b-xl"></div>
+          </div>
+          <div className="absolute inset-0 top-10">
+            <div className={`w-full h-full transition-colors duration-300 ${isHovered ? 'bg-wealth-teal' : 'bg-wealth-navy/90'}`}>
+              {/* App icons (simplified) */}
+              <div className="grid grid-cols-3 gap-4 p-6">
+                {[...Array(6)].map((_, i) => (
+                  <div 
+                    key={i} 
+                    className="aspect-square rounded-xl bg-white/20 shadow-lg"
+                    style={{
+                      transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                      transition: 'transform 0.3s ease'
+                    }}
+                  ></div>
+                ))}
+              </div>
+              
+              {/* Stock chart */}
+              {isHovered && (
+                <div className="mx-6 mt-4 bg-white p-4 rounded-xl shadow-lg">
+                  <div className="h-4 w-1/3 bg-wealth-teal/50 rounded-full mb-2"></div>
+                  <div className="flex items-end space-x-1 h-20">
+                    {[40, 25, 60, 30, 45, 80, 35, 55, 70].map((height, i) => (
+                      <div 
+                        key={i}
+                        className="flex-1 bg-wealth-teal/80 rounded-t-sm"
+                        style={{ height: `${height}%` }}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
       
-      {/* Screen */}
-      <mesh position={[0, 0, 0.06]} castShadow>
-        <boxGeometry args={[0.9, 1.8, 0.01]} />
-        <meshStandardMaterial 
-          color={hovering ? new THREE.Color("#3CDDDB") : new THREE.Color("#2CA6A4")} 
-          emissive={hovering ? new THREE.Color("#3CDDDB") : new THREE.Color("#2CA6A4")} 
-          emissiveIntensity={0.8} 
-          metalness={0.3}
-          roughness={0.3}
-        />
-      </mesh>
-      
-      {/* Home button */}
-      <mesh position={[0, -1, 0.06]} castShadow>
-        <cylinderGeometry args={[0.1, 0.1, 0.02, 32]} />
-        <meshStandardMaterial color={new THREE.Color("#333333")} />
-      </mesh>
-      
-      {/* Camera */}
-      <mesh position={[0, 0.85, 0.06]} castShadow>
-        <cylinderGeometry args={[0.05, 0.05, 0.02, 32]} />
-        <meshStandardMaterial color={new THREE.Color("#111111")} />
-      </mesh>
-      
-      {/* App icons (simplified as colored squares) */}
-      {[
-        [-0.3, 0.4, 0.07, "#e74c3c"],
-        [0, 0.4, 0.07, "#3498db"],
-        [0.3, 0.4, 0.07, "#2ecc71"],
-        [-0.3, 0, 0.07, "#f1c40f"],
-        [0, 0, 0.07, "#9b59b6"],
-        [0.3, 0, 0.07, "#e67e22"],
-      ].map((params, i) => (
-        <mesh key={i} position={[params[0] as number, params[1] as number, params[2] as number]} castShadow>
-          <boxGeometry args={[0.18, 0.18, 0.01]} />
-          <meshStandardMaterial color={new THREE.Color(params[3] as string)} />
-        </mesh>
-      ))}
-      
-      {/* Animated Stock Chart */}
-      {hovering && (
-        <group position={[0, -0.4, 0.07]}>
-          <mesh position={[0, 0, 0]}>
-            <boxGeometry args={[0.7, 0.3, 0.01]} />
-            <meshStandardMaterial color={new THREE.Color("#ffffff")} />
-          </mesh>
-          <mesh position={[-0.3, 0.05, 0.02]}>
-            <sphereGeometry args={[0.03, 16, 16]} />
-            <meshStandardMaterial color={new THREE.Color("#2ecc71")} emissive={new THREE.Color("#2ecc71")} emissiveIntensity={0.5} />
-          </mesh>
-          <mesh position={[-0.15, 0.08, 0.02]}>
-            <sphereGeometry args={[0.03, 16, 16]} />
-            <meshStandardMaterial color={new THREE.Color("#2ecc71")} emissive={new THREE.Color("#2ecc71")} emissiveIntensity={0.5} />
-          </mesh>
-          <mesh position={[0, 0.04, 0.02]}>
-            <sphereGeometry args={[0.03, 16, 16]} />
-            <meshStandardMaterial color={new THREE.Color("#2ecc71")} emissive={new THREE.Color("#2ecc71")} emissiveIntensity={0.5} />
-          </mesh>
-          <mesh position={[0.15, 0.12, 0.02]}>
-            <sphereGeometry args={[0.03, 16, 16]} />
-            <meshStandardMaterial color={new THREE.Color("#2ecc71")} emissive={new THREE.Color("#2ecc71")} emissiveIntensity={0.5} />
-          </mesh>
-          <mesh position={[0.3, 0.15, 0.02]}>
-            <sphereGeometry args={[0.03, 16, 16]} />
-            <meshStandardMaterial color={new THREE.Color("#2ecc71")} emissive={new THREE.Color("#2ecc71")} emissiveIntensity={0.5} />
-          </mesh>
-        </group>
-      )}
-    </group>
-  );
-}
-
-function Scene() {
-  return (
-    <>
-      <ambientLight intensity={0.8} />
-      <pointLight position={[10, 10, 10]} intensity={1} castShadow />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} />
-      
-      <Float
-        speed={3} // Animation speed
-        rotationIntensity={0.2} // XYZ rotation intensity
-        floatIntensity={0.5} // Up/down float intensity
-      >
-        <PhoneModel />
-      </Float>
-      
-      <OrbitControls 
-        enableZoom={false}
-        autoRotate
-        autoRotateSpeed={2}
-        minPolarAngle={Math.PI / 3}
-        maxPolarAngle={Math.PI / 1.5}
+      {/* Decorative elements */}
+      <motion.div 
+        className="absolute -bottom-8 -left-8 w-16 h-16 bg-wealth-gold opacity-50 rounded-full blur-xl"
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 4, repeat: Infinity }}
       />
-    </>
+      <motion.div 
+        className="absolute -top-8 -right-8 w-24 h-24 bg-wealth-teal opacity-50 rounded-full blur-xl"
+        animate={{ scale: [1, 1.3, 1] }}
+        transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
+      />
+      
+      {/* App features callouts */}
+      <motion.div 
+        className="absolute -left-32 top-1/4 bg-white p-3 rounded-lg shadow-lg text-sm w-28 text-center"
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1 }}
+      >
+        <span className="text-wealth-teal font-medium">Real-time tracking</span>
+        <div className="absolute w-6 h-0.5 bg-wealth-teal right-[-24px] top-1/2"></div>
+      </motion.div>
+      
+      <motion.div 
+        className="absolute -right-36 top-2/3 bg-white p-3 rounded-lg shadow-lg text-sm w-32 text-center"
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1.2 }}
+      >
+        <span className="text-wealth-navy font-medium">Instant notifications</span>
+        <div className="absolute w-6 h-0.5 bg-wealth-navy left-[-24px] top-1/2"></div>
+      </motion.div>
+      
+      <motion.div 
+        className="absolute -right-40 top-1/4 bg-white p-3 rounded-lg shadow-lg text-sm w-36 text-center"
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1.4 }}
+      >
+        <span className="text-wealth-gold font-medium">Smart portfolio insights</span>
+        <div className="absolute w-6 h-0.5 bg-wealth-gold left-[-24px] top-1/2"></div>
+      </motion.div>
+    </div>
   );
-}
+};
 
 const ProductFeatures: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
+  const [webGLAvailable, setWebGLAvailable] = useState(true);
+  
+  useEffect(() => {
+    // Check if WebGL is available
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      setWebGLAvailable(!!gl);
+    } catch (e) {
+      console.error('WebGL not available:', e);
+      setWebGLAvailable(false);
+    }
+  }, []);
   
   return (
     <section id="products" className="section-padding py-24 bg-wealth-light relative overflow-hidden">
@@ -297,77 +290,7 @@ const ProductFeatures: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="relative w-[280px] h-[580px]">
-              {/* 3D Phone Model */}
-              <div className="bg-wealth-navy rounded-[3rem] p-2 shadow-xl h-full w-full relative z-10">
-                <div className="bg-black rounded-[2.5rem] overflow-hidden h-full w-full relative">
-                  <div className="bg-wealth-navy h-10 flex justify-center items-center">
-                    <div className="w-20 h-6 bg-black rounded-b-xl"></div>
-                  </div>
-                  <div className="absolute inset-0 top-10">
-                    <Suspense fallback={
-                      <div className="w-full h-full bg-gray-800 flex items-center justify-center text-white">
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                          className="w-8 h-8 border-2 border-white border-t-transparent rounded-full"
-                        />
-                      </div>
-                    }>
-                      <Canvas camera={{ position: [0, 0, 3] }} className="h-full w-full">
-                        <Scene />
-                      </Canvas>
-                    </Suspense>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Decorative elements */}
-              <motion.div 
-                className="absolute -bottom-8 -left-8 w-16 h-16 bg-wealth-gold opacity-50 rounded-full blur-xl"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 4, repeat: Infinity }}
-              />
-              <motion.div 
-                className="absolute -top-8 -right-8 w-24 h-24 bg-wealth-teal opacity-50 rounded-full blur-xl"
-                animate={{ scale: [1, 1.3, 1] }}
-                transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
-              />
-              
-              {/* App features callouts */}
-              <motion.div 
-                className="absolute -left-32 top-1/4 bg-white p-3 rounded-lg shadow-lg text-sm w-28 text-center"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 1 }}
-              >
-                <span className="text-wealth-teal font-medium">Real-time tracking</span>
-                <div className="absolute w-6 h-0.5 bg-wealth-teal right-[-24px] top-1/2"></div>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute -right-36 top-2/3 bg-white p-3 rounded-lg shadow-lg text-sm w-32 text-center"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 1.2 }}
-              >
-                <span className="text-wealth-navy font-medium">Instant notifications</span>
-                <div className="absolute w-6 h-0.5 bg-wealth-navy left-[-24px] top-1/2"></div>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute -right-40 top-1/4 bg-white p-3 rounded-lg shadow-lg text-sm w-36 text-center"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 1.4 }}
-              >
-                <span className="text-wealth-gold font-medium">Smart portfolio insights</span>
-                <div className="absolute w-6 h-0.5 bg-wealth-gold left-[-24px] top-1/2"></div>
-              </motion.div>
-            </div>
+            <PhoneModelFallback />
           </motion.div>
         </div>
       </div>

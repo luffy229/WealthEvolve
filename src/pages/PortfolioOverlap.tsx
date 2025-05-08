@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import OverlapAnalyzer from '@/components/OverlapAnalyzer';
@@ -31,27 +31,12 @@ const item = {
 };
 
 const PortfolioOverlap: React.FC = () => {
-  // Disable three.js animations that may be causing WebGL context loss
-  useEffect(() => {
-    return () => {
-      // Cleanup any potential three.js resources when component unmounts
-      const threeCanvases = document.querySelectorAll('canvas');
-      threeCanvases.forEach(canvas => {
-        const context = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-        if (context) {
-          // @ts-ignore
-          context.getExtension('WEBGL_lose_context')?.loseContext();
-        }
-      });
-    };
-  }, []);
-
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Enhanced gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-wealth-light via-white to-wealth-light/30 -z-10"></div>
       
-      {/* Simplified animated decorative elements to avoid WebGL issues */}
+      {/* Simplified decorative elements without WebGL */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[350px] -right-[250px] w-[600px] h-[600px] rounded-full bg-wealth-teal/20"></div>
         <div className="absolute top-[30%] -left-[250px] w-[600px] h-[600px] rounded-full bg-wealth-navy/20"></div>
@@ -78,7 +63,12 @@ const PortfolioOverlap: React.FC = () => {
           
           {/* Feature highlights before the analyzer */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
               <Card className="border-wealth-teal/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:bg-white hover:-translate-y-1">
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center text-wealth-navy">
@@ -90,9 +80,14 @@ const PortfolioOverlap: React.FC = () => {
                   <p className="text-wealth-gray">Instantly analyze overlapping holdings between multiple mutual funds.</p>
                 </CardContent>
               </Card>
-            </div>
+            </motion.div>
             
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
               <Card className="border-wealth-teal/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:bg-white hover:-translate-y-1">
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center text-wealth-navy">
@@ -104,9 +99,14 @@ const PortfolioOverlap: React.FC = () => {
                   <p className="text-wealth-gray">Intuitive charts and visualizations to help you understand portfolio composition.</p>
                 </CardContent>
               </Card>
-            </div>
+            </motion.div>
             
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <Card className="border-wealth-teal/20 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm hover:bg-white hover:-translate-y-1">
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center text-wealth-navy">
@@ -118,7 +118,7 @@ const PortfolioOverlap: React.FC = () => {
                   <p className="text-wealth-gray">Get personalized recommendations to improve your portfolio diversification.</p>
                 </CardContent>
               </Card>
-            </div>
+            </motion.div>
           </div>
           
           <OverlapAnalyzer />
