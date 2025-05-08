@@ -2,11 +2,23 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, X, User, Settings, CreditCard } from 'lucide-react';
 import ThemeSwitcher from './ThemeSwitcher';
+import UserProfileMenu from './UserProfileMenu';
+
+// Mock authentication state (in a real app, this would come from context/auth provider)
+const useAuthState = () => {
+  // For demo purposes, check if there's a user in localStorage
+  const storedUser = localStorage.getItem('wealthevolve_user');
+  return { 
+    isAuthenticated: !!storedUser,
+    user: storedUser ? JSON.parse(storedUser) : null
+  };
+};
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, user } = useAuthState();
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50 theme-navbar">
@@ -34,14 +46,21 @@ const Navbar: React.FC = () => {
                 Free Portfolio Check
               </Button>
             </Link>
-            <Link to="/login" className="mr-2">
-              <Button variant="outline" className="border-wealth-teal text-wealth-teal hover:bg-wealth-teal hover:text-white">
-                Login
-              </Button>
-            </Link>
-            <Link to="/signup">
-              <Button className="bg-wealth-navy hover:bg-opacity-90 text-white">Sign Up</Button>
-            </Link>
+
+            {isAuthenticated ? (
+              <UserProfileMenu user={user} />
+            ) : (
+              <>
+                <Link to="/login" className="mr-2">
+                  <Button variant="outline" className="border-wealth-teal text-wealth-teal hover:bg-wealth-teal hover:text-white">
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="bg-wealth-navy hover:bg-opacity-90 text-white">Sign Up</Button>
+                </Link>
+              </>
+            )}
           </div>
           
           {/* Mobile menu button */}
@@ -72,15 +91,44 @@ const Navbar: React.FC = () => {
                     Free Portfolio Check
                   </Button>
                 </Link>
-                <Link to="/login" className="w-full">
-                  <Button variant="outline" className="border-wealth-teal text-wealth-teal hover:bg-wealth-teal hover:text-white w-full">
-                    <User className="mr-2 h-4 w-4" />
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/signup" className="w-full">
-                  <Button className="bg-wealth-navy hover:bg-opacity-90 text-white w-full">Sign Up</Button>
-                </Link>
+
+                {isAuthenticated ? (
+                  <div className="space-y-3">
+                    <Link to="/profile" className="w-full">
+                      <Button variant="outline" className="border-wealth-teal text-wealth-teal hover:bg-wealth-teal hover:text-white w-full">
+                        <User className="mr-2 h-4 w-4" />
+                        My Profile
+                      </Button>
+                    </Link>
+                    <Link to="/subscription" className="w-full">
+                      <Button variant="outline" className="border-wealth-navy text-wealth-navy hover:bg-wealth-navy hover:text-white w-full">
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        Subscription
+                      </Button>
+                    </Link>
+                    <Button 
+                      className="bg-wealth-navy hover:bg-opacity-90 text-white w-full"
+                      onClick={() => {
+                        localStorage.removeItem('wealthevolve_user');
+                        window.location.reload();
+                      }}
+                    >
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <Link to="/login" className="w-full">
+                      <Button variant="outline" className="border-wealth-teal text-wealth-teal hover:bg-wealth-teal hover:text-white w-full">
+                        <User className="mr-2 h-4 w-4" />
+                        Login
+                      </Button>
+                    </Link>
+                    <Link to="/signup" className="w-full">
+                      <Button className="bg-wealth-navy hover:bg-opacity-90 text-white w-full">Sign Up</Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>

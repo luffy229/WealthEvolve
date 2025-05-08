@@ -37,6 +37,17 @@ const Login: React.FC = () => {
     console.log("Login form submitted:", values);
     // This is a placeholder for actual authentication
     // In a real app, you would call an authentication service
+    
+    // Create a mock user object for demo purposes
+    const user = {
+      email: values.email,
+      name: values.email.split('@')[0],  // Just use the part before @ as name for demo
+      createdAt: new Date().toISOString(),
+    };
+    
+    // Store user in localStorage
+    localStorage.setItem('wealthevolve_user', JSON.stringify(user));
+    
     toast({
       title: "Login successful",
       description: "Redirecting to dashboard...",

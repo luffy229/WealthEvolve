@@ -10,8 +10,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
-import { Eye, EyeOff, User, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 // Form schema
 const signupSchema = z.object({
@@ -19,15 +20,15 @@ const signupSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
   confirmPassword: z.string(),
+  terms: z.boolean().refine(val => val === true, { message: "You must accept the terms and conditions" }),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: "Passwords do not match",
   path: ["confirmPassword"],
 });
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   // Form definition
   const form = useForm<z.infer<typeof signupSchema>>({
@@ -37,6 +38,7 @@ const Signup: React.FC = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      terms: false,
     },
   });
 
@@ -45,14 +47,25 @@ const Signup: React.FC = () => {
     console.log("Signup form submitted:", values);
     // This is a placeholder for actual registration
     // In a real app, you would call a registration service
+    
+    // Create a user object
+    const user = {
+      name: values.name,
+      email: values.email,
+      createdAt: new Date().toISOString()
+    };
+    
+    // Store in localStorage for demo purposes
+    localStorage.setItem('wealthevolve_user', JSON.stringify(user));
+    
     toast({
       title: "Account created successfully!",
-      description: "Redirecting to login...",
+      description: "Welcome to WealthEvolve. Redirecting to the dashboard...",
     });
     
-    // Mock successful signup
+    // Redirect after toast
     setTimeout(() => {
-      navigate("/login");
+      navigate("/");
     }, 1500);
   };
 
@@ -77,10 +90,7 @@ const Signup: React.FC = () => {
                     <FormItem>
                       <FormLabel>Full Name</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Input placeholder="Enter your full name" {...field} />
-                          <User className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-                        </div>
+                        <Input placeholder="Enter your full name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -93,10 +103,7 @@ const Signup: React.FC = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Input placeholder="Enter your email" {...field} />
-                          <Mail className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-                        </div>
+                        <Input placeholder="Enter your email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -141,34 +148,37 @@ const Signup: React.FC = () => {
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Input 
-                            type={showConfirmPassword ? "text" : "password"} 
-                            placeholder="Confirm your password" 
-                            {...field} 
-                          />
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          >
-                            {showConfirmPassword ? (
-                              <EyeOff className="h-4 w-4 text-gray-500" />
-                            ) : (
-                              <Eye className="h-4 w-4 text-gray-500" />
-                            )}
-                          </Button>
-                        </div>
+                        <Input 
+                          type={showPassword ? "text" : "password"} 
+                          placeholder="Confirm your password" 
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <div className="text-xs text-wealth-gray">
-                  By creating an account, you agree to our <Link to="/terms" className="text-wealth-teal hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-wealth-teal hover:underline">Privacy Policy</Link>.
-                </div>
+                <FormField
+                  control={form.control}
+                  name="terms"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 py-2">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          id="terms"
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel htmlFor="terms" className="text-sm font-normal text-wealth-gray cursor-pointer">
+                          I agree to the <Link to="/terms" className="text-wealth-teal hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-wealth-teal hover:underline">Privacy Policy</Link>
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
                 <Button type="submit" className="w-full bg-wealth-navy hover:bg-opacity-90">
                   Create Account
                 </Button>
